@@ -6,8 +6,6 @@ public enum SceneLabel {
 
     FINANCE("金融"),
 
-    HEALTH("健康"),
-
     EDUCATION("教育"),
 
     ENTERTAINMENT("娱乐"),

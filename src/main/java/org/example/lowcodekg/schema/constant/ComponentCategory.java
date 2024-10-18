@@ -7,7 +7,7 @@ public enum ComponentCategory {
 
     WORK_FLOW("工作流"),
 
-    UI_COMPONENT("UI组件");
+    UI_COMPONENT("页面组件");
 
     private String code;
 

@@ -6,7 +6,7 @@
 JDK 11 \
 Maven 3.9.9
 
-## 项目目录结构
+## 项目结构
 - controller: 前端请求处理，调用服务接口并返回
 - dao: 数据访问层，提供 Neo4j 和 ES 的数据存取接口
 - extraction: 知识挖掘及关联

@@ -36,4 +36,29 @@ public class Component {
      */
     private String description;
 
+
+    /**
+     * 将数据对象持久化到Neo4j
+     */
+    public void storeInNeo4j() {
+        try {
+
+        } catch (Exception e) {
+            System.err.println("Error in storeInNeo4j: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 将数据对象持久化到ES
+     */
+    public void storeInES() {
+        try {
+
+        } catch (Exception e) {
+            System.err.println("Error in storeInES: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
 }

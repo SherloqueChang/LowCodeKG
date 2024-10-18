@@ -91,7 +91,9 @@ public abstract class KnowledgeExtractor {
 
     public void execute() throws IOException {
         //TODO: neo4j config
+        DatabaseManagementService dbms = new DatabaseManagementServiceBuilder(new File(graphDir).toPath()).build();
+        db = dbms.database("neo4j");
         this.extraction();
-
+        dbms.shutdown();
     }
 }

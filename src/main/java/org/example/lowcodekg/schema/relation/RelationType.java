@@ -8,4 +8,8 @@ public class RelationType {
     public static final RelationshipType CONTAIN = RelationshipType.withName("CONTAIN");
 
     public static final RelationshipType INVOKE = RelationshipType.withName("INVOKE");
+
+    public static final RelationshipType BINDING = RelationshipType.withName("BINDING");
+
+    public static final RelationshipType DEPENDENCY = RelationshipType.withName("DEPENDENCY");
 }

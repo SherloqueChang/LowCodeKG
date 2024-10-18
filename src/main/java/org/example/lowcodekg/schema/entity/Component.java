@@ -4,6 +4,7 @@ import lombok.Data;
 import org.example.lowcodekg.schema.constant.ComponentCategory;
 import org.example.lowcodekg.schema.constant.SceneLabel;
 import org.neo4j.graphdb.Label;
+import org.springframework.data.neo4j.repository.Neo4jRepository;
 
 /**
  * 低代码组件实体类

@@ -3,14 +3,10 @@ package org.example.lowcodekg.extraction;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.io.FileUtils;
-import org.neo4j.dbms.api.DatabaseManagementService;
-import org.neo4j.dbms.api.DatabaseManagementServiceBuilder;
-import org.neo4j.graphdb.GraphDatabaseService;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -27,9 +23,6 @@ public abstract class KnowledgeExtractor {
     @Getter
     @Setter
     private String dataDir;
-
-    @Getter
-    private GraphDatabaseService db = null;
 
     public static void execute(List<ExtractorConfig> extractorConfigList) {
         for (ExtractorConfig config : extractorConfigList) {
@@ -83,17 +76,14 @@ public abstract class KnowledgeExtractor {
         }
     }
 
-    public boolean isBatchInsert() {
-        return false;
-    }
-
     public abstract void extraction();
 
     public void execute() throws IOException {
         //TODO: neo4j config
-        DatabaseManagementService dbms = new DatabaseManagementServiceBuilder(new File(graphDir).toPath()).build();
-        db = dbms.database("neo4j");
+        // create neo4j db connection
+
         this.extraction();
-        dbms.shutdown();
+
+        // shutdown
     }
 }

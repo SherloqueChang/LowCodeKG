@@ -8,7 +8,6 @@ import org.springframework.data.neo4j.repository.Neo4jRepository;
 
 /**
  * 低代码组件实体类
- * @author cwh
  */
 @Data
 public class Component {

@@ -4,8 +4,7 @@ import lombok.Data;
 import org.neo4j.graphdb.Label;
 
 /**
- * 低代码模板
- * @author cwh
+ * 低代码模
  */
 @Data
 public class Template {

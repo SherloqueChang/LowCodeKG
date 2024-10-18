@@ -20,7 +20,6 @@ public class LowCodeKgApplication {
         CmdLineParser parser = new CmdLineParser(option);
 
         try {
-
             if (args.length == 0) {
                 return;
             }

@@ -4,8 +4,7 @@ import lombok.Data;
 import org.neo4j.graphdb.Label;
 
 /**
- * 组件配置项
- * @author: cwh
+ * 组件配置
  */
 @Data
 public class ConfigItem {

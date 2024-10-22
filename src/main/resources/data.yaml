@@ -3,33 +3,33 @@ links:
     target: 1
     relation:
       relationshipId: 100
-      relationship: relation1
+      relationship: relateConfig
       lineNumber: null
       isSelf: false
-  - source: 2
-    target: 3
+  - source: 0
+    target: 2
     relation:
       relationshipId: 101
-      relationship: relation2
-      lineNumber: null
-      isSelf: false
-  - source: 2
-    target: 3
-    relation:
-      relationshipId: 102
-      relationship: relation3
+      relationship: relateConfig
       lineNumber: null
       isSelf: false
 nodes:
   - id: 0
-    name: 测试0
+    name: Button
     label: Component
+    desc: 按钮用于开始一个即时操作。[何时使用]标记了一个（或封装一组）操作命令，响应用户点击行为，触发相应的业务逻辑。
+    class: ui
+    source: antd
+    base_code: <Button></Button>
   - id: 1
-    name: 测试1
-    label: Component
+    name: autoInsertSpace
+    label: ConfigItem
+    default: true
+    class: boolean
+    desc: 我们默认提供两个汉字之间的空格，可以设置 autoInsertSpace 为 false 关闭
   - id: 2
-    name: Component2
-    label: Component
-  - id: 3
-    name: Component3
-    label: Component
+    name: color
+    label: ConfigItem
+    default: null
+    class: default | primary | danger
+    desc: 设置按钮的颜色

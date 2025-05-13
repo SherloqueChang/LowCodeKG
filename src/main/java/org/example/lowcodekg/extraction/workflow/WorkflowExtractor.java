@@ -9,8 +9,11 @@ import org.neo4j.driver.Result;
 import org.neo4j.driver.types.Node;
 
 import java.text.MessageFormat;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+
+import static org.example.lowcodekg.query.utils.Constants.DESCRIPTION_FILE_PATH;
 
 /**
  * 从请求响应方法出发，抽取出该功能实现的方法调用链以及相关的数据实体
@@ -23,6 +26,8 @@ public class WorkflowExtractor extends KnowledgeExtractor {
     @Override
     public void extraction() {
         try {
+            Map<String, Map<String, String>> descriptionMap = funcGenerateService.loadEntitiesFromJson(DESCRIPTION_FILE_PATH);
+
             String cypher = """
                     MATCH (n:Workflow)
                     RETURN n
@@ -48,7 +53,9 @@ public class WorkflowExtractor extends KnowledgeExtractor {
                         workflowEntity = workflowRepo.save(workflowEntity);
 
                         // 生成功能描述
-                         funcGenerateService.genWorkflowFunc(workflowEntity);
+                        String description = descriptionMap.get(workflowEntity.getFullName()).get("description");
+                        String ir = descriptionMap.get(workflowEntity.getFullName()).get("ir");
+                         funcGenerateService.genWorkflowFuncFromJson(workflowEntity, description, ir);
                     }
                 });
             }

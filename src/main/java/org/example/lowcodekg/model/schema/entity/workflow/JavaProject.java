@@ -15,10 +15,13 @@ import org.example.lowcodekg.model.dao.neo4j.repository.WorkflowRepo;
 import org.example.lowcodekg.common.util.JsonUtil;
 import org.example.lowcodekg.query.service.util.ElasticSearchService;
 import org.example.lowcodekg.query.service.util.summarize.FuncGenerate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.util.*;
+
+import static org.example.lowcodekg.query.utils.Constants.DESCRIPTION_FILE_PATH;
 
 @Component
 public class JavaProject {
@@ -98,6 +101,7 @@ public class JavaProject {
     }
 
     private void parseClassEntity(JavaClassRepo javaClassRepo) {
+        Map<String, Map<String, String>> descriptionMap = funcGenerate.loadEntitiesFromJson(DESCRIPTION_FILE_PATH);
         classMap.values().forEach(classInfo -> {
             classInfo.setProjectName(projectName);
             classInfo.getSuperClassList().addAll(findJavaClassInfo(classInfo.getSuperClassType()));
@@ -105,7 +109,15 @@ public class JavaProject {
             JavaClassEntity classEntity = classInfo.storeInNeo4j(javaClassRepo, jsonMap.get(classInfo.getFullName()));
             // 判定为数据实体类，生成描述信息并添加索引
             if(classInfo.getIsData()) {
-                funcGenerate.genDataObjectFunc(classEntity);
+                Map<String, String> entityDesc = descriptionMap.get(classInfo.getFullName());
+                String description = "";
+                String ir = "";
+                if (entityDesc != null) {
+                    description = entityDesc.get("description") != null ? entityDesc.get("description") : "";
+                    ir = entityDesc.get("ir") != null ? entityDesc.get("ir") : "";
+                }
+                funcGenerate.genDataObjectFuncFromJson(classEntity, description, ir);
+//                funcGenerate.genDataObjectFunc(classEntity);
             }
             classEntityMap.put(classInfo.getFullName(), classEntity);
         });

@@ -43,4 +43,6 @@ public final class Constants {
 
     public static final String logFilePath = "D:\\Master\\log.txt";
 
+    public static final String DESCRIPTION_FILE_PATH = "D:\\Master\\data.json";
+
 }

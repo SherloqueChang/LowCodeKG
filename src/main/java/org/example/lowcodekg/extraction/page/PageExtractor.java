@@ -263,7 +263,7 @@ public class PageExtractor extends KnowledgeExtractor {
         List<Script.ScriptData> dataList = new ArrayList<>();
         try {
             prompt = prompt.replace("{content}", dataBlock);
-            String answer = llmGenerateService.generateAnswer(prompt);
+            String answer = llmService.chat(prompt);
             if(answer.contains("```json")) {
                 answer = answer.substring(answer.indexOf("```json") + 7, answer.lastIndexOf("```"));
             }

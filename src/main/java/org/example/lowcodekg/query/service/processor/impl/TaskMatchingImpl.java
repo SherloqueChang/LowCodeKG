@@ -3,6 +3,7 @@ package org.example.lowcodekg.query.service.processor.impl;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import io.micrometer.common.util.StringUtils;
+import org.apache.shiro.util.CollectionUtils;
 import org.example.lowcodekg.common.config.DebugConfig;
 import org.example.lowcodekg.model.result.Result;
 import org.example.lowcodekg.model.result.ResultCodeEnum;
@@ -139,6 +140,9 @@ public class TaskMatchingImpl implements TaskMatching {
 
     @Override
     public Double minTransformCost(List<IR> taskIRList, List<IR> templateIRList) {
+        if(CollectionUtils.isEmpty(taskIRList) || CollectionUtils.isEmpty(templateIRList)) {
+            return (double) Math.max(CollectionUtils.isEmpty(taskIRList) ? 3 : taskIRList.size(), CollectionUtils.isEmpty(templateIRList) ? 3 : templateIRList.size());
+        }
         int m = taskIRList.size(); // vectorList1 的长度
         int n = templateIRList.size(); // vectorList2 的长度
 

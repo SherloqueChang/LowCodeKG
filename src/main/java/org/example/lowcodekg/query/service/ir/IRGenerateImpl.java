@@ -11,6 +11,7 @@ import org.example.lowcodekg.model.result.ResultCodeEnum;
 import org.example.lowcodekg.query.model.IR;
 import org.example.lowcodekg.query.model.Node;
 import org.example.lowcodekg.query.model.Task;
+import org.example.lowcodekg.query.service.llm.LLMService;
 import org.example.lowcodekg.query.service.util.EmbeddingUtil;
 import org.example.lowcodekg.query.utils.FormatUtil;
 import org.example.lowcodekg.service.LLMGenerateService;
@@ -31,7 +32,7 @@ import static org.example.lowcodekg.query.utils.Prompt.TASK_TO_IR_PROMPT;
 public class IRGenerateImpl implements IRGenerate {
 
     @Autowired
-    private LLMGenerateService llmService;
+    private LLMService llmService;
     @Autowired
     private DebugConfig debugConfig;
 
@@ -39,7 +40,7 @@ public class IRGenerateImpl implements IRGenerate {
     public Result<List<IR>> generateIR(String description, String type) {
         try {
             String prompt = TASK_TO_IR_PROMPT.replace("{Task}", description);
-            String answer = FormatUtil.extractJson(llmService.generateAnswer(prompt));
+            String answer = FormatUtil.extractJson(llmService.chat(prompt));
             List<IR> irList = buildIRList(answer);
             irList.stream().forEach(ir -> {
                 ir.setType(type);
@@ -57,7 +58,7 @@ public class IRGenerateImpl implements IRGenerate {
         try {
             String taskInfo = task.getName() + ":" + task.getDescription();
             String prompt = TASK_TO_IR_PROMPT.replace("{Task}", taskInfo);
-            String answer = FormatUtil.extractJson(llmService.generateAnswer(prompt));
+            String answer = FormatUtil.extractJson(llmService.chat(prompt));
             List<IR> irList = buildIRList(answer);
             task.setIrList(irList);
 
@@ -76,7 +77,7 @@ public class IRGenerateImpl implements IRGenerate {
             if("Workflow".equals(label)) {
                 String templateInfo = template.getName() + ":" + template.getDescription();
                 String prompt = TASK_TO_IR_PROMPT.replace("{Task}", templateInfo);
-                String answer = FormatUtil.extractJson(llmService.generateAnswer(prompt));
+                String answer = FormatUtil.extractJson(llmService.chat(prompt));
                 irList = buildIRList(answer);
             } else if("PageTemplate".equals(label)) {
                 IR ir = new IR();

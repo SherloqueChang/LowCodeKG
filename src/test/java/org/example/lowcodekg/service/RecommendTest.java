@@ -66,7 +66,7 @@ public class RecommendTest {
     void test() {
         FormatUtil.setPrintStream(logFilePath);
 
-        String query = "实现商品SKU库存的CRUD(增删改查)管理功能";
+        String query = "实现博客文章置顶";
 
         // 需求分解
         TaskGraph taskGraph = taskSplit.taskSplit(query).getData();

@@ -75,6 +75,7 @@ public class JsonUtil {
                 // 先获取description值，再判断是否为空
                 var description = node.get("description");
                 jsonObject.put("description", description.isNull() ? "" : description.asString());
+                jsonObject.put("ir", node.get("ir").asString());
                 writer.write(jsonObject.toJSONString());
             }
 
@@ -95,6 +96,7 @@ public class JsonUtil {
                 // 先获取description值，再判断是否为空
                 var description = node.get("description");
                 jsonObject.put("description", description.isNull() ? "" : description.asString());
+                jsonObject.put("ir", node.get("ir").asString());
                 writer.write(jsonObject.toJSONString());
             }
 

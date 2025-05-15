@@ -34,22 +34,22 @@ public class TaskMergeImpl implements TaskMerge {
     @Override
     public Result<Map<Task, Set<Node>>> mergeTask(TaskGraph graph, String query) {
         try {
-            JSONObject input = new JSONObject();
-            input.put("task", query);
-            JSONArray subTasks = new JSONArray();
-            List<Task> sortedTasks = graph.topologicalSort();
-            for(Task task : sortedTasks) {
-                subTasks.add(buildSubTaskJson(task));
-            }
-            input.put("subTasks", subTasks);
-            String prompt = RERANK_WITHIN_TASK_PROMPT.replace("{input}", input.toJSONString());
-            String answer = FormatUtil.extractJson(llmService.chat(prompt));
-            Map<Task, Set<Node>> result = filterResourcesByLLM(answer, sortedTasks);
-
-//            Map<Task, Set<Node>> result = new HashMap<>();
-//            for(Task task : graph.getTasks().values()) {
-//                result.put(task, new HashSet<>(task.getResourceList()));
+//            JSONObject input = new JSONObject();
+//            input.put("task", query);
+//            JSONArray subTasks = new JSONArray();
+//            List<Task> sortedTasks = graph.topologicalSort();
+//            for(Task task : sortedTasks) {
+//                subTasks.add(buildSubTaskJson(task));
 //            }
+//            input.put("subTasks", subTasks);
+//            String prompt = RERANK_WITHIN_TASK_PROMPT.replace("{input}", input.toJSONString());
+//            String answer = FormatUtil.extractJson(llmService.chat(prompt));
+//            Map<Task, Set<Node>> result = filterResourcesByLLM(answer, sortedTasks);
+
+            Map<Task, Set<Node>> result = new HashMap<>();
+            for(Task task : graph.getTasks().values()) {
+                result.put(task, new HashSet<>(task.getResourceList()));
+            }
 
             if(debugConfig.isDebugMode()) {
                 for(Task task : result.keySet()) {

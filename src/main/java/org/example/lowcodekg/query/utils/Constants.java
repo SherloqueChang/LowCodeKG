@@ -28,7 +28,7 @@ public final class Constants {
     /**
      * 子任务推荐候选资源重排序后的个数
      */
-    public static final int MAX_RESOURCE_RECOMMEND_NUM = 5;
+    public static final int MAX_RESOURCE_RECOMMEND_NUM = 3;
 
     /**
      * 数据记录路径

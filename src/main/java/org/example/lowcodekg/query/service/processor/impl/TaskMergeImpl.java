@@ -34,32 +34,29 @@ public class TaskMergeImpl implements TaskMerge {
     @Override
     public Result<Map<Task, Set<Node>>> mergeTask(TaskGraph graph, String query) {
         try {
-            // construct prompt input
             JSONObject input = new JSONObject();
             input.put("task", query);
-            // iterate task graph
             JSONArray subTasks = new JSONArray();
             List<Task> sortedTasks = graph.topologicalSort();
             for(Task task : sortedTasks) {
                 subTasks.add(buildSubTaskJson(task));
             }
             input.put("subTasks", subTasks);
-            // LLM rerank
             String prompt = RERANK_WITHIN_TASK_PROMPT.replace("{input}", input.toJSONString());
             String answer = FormatUtil.extractJson(llmService.chat(prompt));
-            // result format parse
             Map<Task, Set<Node>> result = filterResourcesByLLM(answer, sortedTasks);
 
+//            Map<Task, Set<Node>> result = new HashMap<>();
+//            for(Task task : graph.getTasks().values()) {
+//                result.put(task, new HashSet<>(task.getResourceList()));
+//            }
+
             if(debugConfig.isDebugMode()) {
-                System.out.println("任务合并prompt:\n" + prompt);
-                System.out.println("LLM返回结果:\n" + answer);
-                System.out.println("合并后的结果集:");
                 for(Task task : result.keySet()) {
-                    System.out.println("Task: " + task.getName() + ": " + task.getDescription());
+                    System.out.println("Task: " + task.getName());
                     for(Node node : result.get(task)) {
-                        System.out.println("Node: " + node.getName() + ": " + node.getDescription());
+                        System.out.println("Resource: " + node.getName());
                     }
-                    System.out.println();
                 }
             }
 

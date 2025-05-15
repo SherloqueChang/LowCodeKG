@@ -64,44 +64,44 @@ public class TaskMatchingImpl implements TaskMatching {
 
             Map<Node, Double> nodeScoreMap = new HashMap<>();
             // 相似度计算
-            for(Node node : nodeList) {
-                Result<Double> scoreResult = subTaskMatchingScore(task, node);
-                if(scoreResult.getCode() == ResultCodeEnum.SUCCESS.getCode()) {
-                    nodeScoreMap.put(node, scoreResult.getData());
-                }
-            }
-            // 根据资源与任务相似度进行重排序(升序)
-            List<Node> sortedNodeList = nodeScoreMap.entrySet()
-                    .stream()
-                    .sorted((entry1, entry2) -> entry1.getValue().compareTo(entry2.getValue()))
-                    .map(Map.Entry::getKey)
-                    .limit(MAX_RESOURCE_RECOMMEND_NUM * Math.max(1, task.getCategory().size()))
-                    .collect(Collectors.toList());
-
-
-//            List<Node> selectedNodes = new ArrayList<>();
-//            int categorySize = task.getCategory().size();
-//            for (int i = 0; i < categorySize; i++) {
-//                int startIndex = i * MAX_WORKFLOW_NUM;
-//                int endIndex = Math.min(startIndex + MAX_RESOURCE_RECOMMEND_NUM, nodeList.size());
-//                if (startIndex < nodeList.size()) {
-//                    selectedNodes.addAll(nodeList.subList(startIndex, endIndex));
+//            for(Node node : nodeList) {
+//                Result<Double> scoreResult = subTaskMatchingScore(task, node);
+//                if(scoreResult.getCode() == ResultCodeEnum.SUCCESS.getCode()) {
+//                    nodeScoreMap.put(node, scoreResult.getData());
 //                }
 //            }
+            // 根据资源与任务相似度进行重排序(升序)
+//            List<Node> sortedNodeList = nodeScoreMap.entrySet()
+//                    .stream()
+//                    .sorted((entry1, entry2) -> entry1.getValue().compareTo(entry2.getValue()))
+//                    .map(Map.Entry::getKey)
+//                    .limit(MAX_RESOURCE_RECOMMEND_NUM * Math.max(1, task.getCategory().size()))
+//                    .collect(Collectors.toList());
+
+
+            List<Node> selectedNodes = new ArrayList<>();
+            int categorySize = task.getCategory().size();
+            for (int i = 0; i < categorySize; i++) {
+                int startIndex = i * MAX_WORKFLOW_NUM;
+                int endIndex = Math.min(startIndex + MAX_RESOURCE_RECOMMEND_NUM, nodeList.size());
+                if (startIndex < nodeList.size()) {
+                    selectedNodes.addAll(nodeList.subList(startIndex, endIndex));
+                }
+            }
 
             // 更新任务资源列表
-//            task.setResourceList(selectedNodes);
-            task.setResourceList(sortedNodeList);
+            task.setResourceList(selectedNodes);
+//            task.setResourceList(sortedNodeList);
             if(debugConfig.isDebugMode()) {
                 System.out.println("重排序分数:");
                 for(Map.Entry<Node, Double> entry : nodeScoreMap.entrySet()) {
                     System.out.println(entry.getKey() + ": " + entry.getValue());
                 }
-                System.out.println("重排序后的资源个数: " + sortedNodeList.size());
-                System.out.println("重排序后的资源:");
-                for(Node node : sortedNodeList) {
-                    System.out.println(node);
-                }
+//                System.out.println("重排序后的资源个数: " + sortedNodeList.size());
+//                System.out.println("重排序后的资源:");
+//                for(Node node : sortedNodeList) {
+//                    System.out.println(node);
+//                }
             }
 
             return Result.build(null, ResultCodeEnum.SUCCESS);

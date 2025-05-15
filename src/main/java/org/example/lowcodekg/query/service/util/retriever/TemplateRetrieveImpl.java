@@ -70,16 +70,17 @@ public class TemplateRetrieveImpl implements TemplateRetrieve {
         try {
             List<Node> nodeList;
             List<Document> documents = new ArrayList<>();
-            StringBuilder taskInfo = new StringBuilder();
-            for(IR ir: task.getIrList()) {
-                taskInfo.append(ir.toSentence() + " ");
-            }
+//            StringBuilder taskInfo = new StringBuilder();
+//            for(IR ir: task.getIrList()) {
+//                taskInfo.append(ir.toSentence() + " ");
+//            }
+            String taskInfo = task.getName() + ":" + task.getDescription();
             if(debugConfig.isDebugMode()) {
                 System.out.println("子任务检索信息:\n" + taskInfo + "\n");
             }
 
             // 基于ES向量检索，获取候选列表
-            float[] vector = FormatUtil.ListToArray(EmbeddingUtil.embedText(taskInfo.toString()));
+            float[] vector = FormatUtil.ListToArray(EmbeddingUtil.embedText(taskInfo));
 
             if(task.getIsPage())  {
                 documents.addAll(esService.hybridSearch(

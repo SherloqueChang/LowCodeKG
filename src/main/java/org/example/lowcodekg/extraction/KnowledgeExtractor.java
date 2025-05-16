@@ -37,6 +37,8 @@ public abstract class KnowledgeExtractor {
     protected static JavaMethodRepo javaMethodRepo;
     @Setter
     protected static JavaFieldRepo javaFieldRepo;
+    @Setter
+    protected static TemplateRepo templateRepo;
 
     @Setter
     protected static ElasticSearchService elasticSearchService;

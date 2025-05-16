@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.example.lowcodekg.common.config.DebugConfig;
 import org.example.lowcodekg.model.dao.es.document.Document;
+import org.example.lowcodekg.model.dao.neo4j.entity.template.TemplateEntity;
 import org.example.lowcodekg.model.result.Result;
 import org.example.lowcodekg.model.result.ResultCodeEnum;
 import org.example.lowcodekg.query.model.IR;
@@ -40,6 +41,33 @@ public class TemplateRetrieveImpl implements TemplateRetrieve {
     @Autowired
     private DebugConfig debugConfig;
 
+
+    @Override
+    public Result<List<TemplateEntity>> queryByNL(String query) {
+        try {
+            List<TemplateEntity> templates = new ArrayList<>();
+
+            float[] vector = FormatUtil.ListToArray(EmbeddingUtil.embedText(query));
+
+            List<Document> documents = esService.hybridSearch(
+                    query,
+                    vector,
+                    MAX_RESULTS,
+                    MIN_SCORE,
+                    0.3,
+                    DEFAULT_INDEX_NAME
+            );
+            templates = documents.stream()
+                    .map(FormatUtil::convertToTemplateNode)
+                    .collect(Collectors.toList());
+            return Result.build(templates, ResultCodeEnum.SUCCESS);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("Error in queryEntitiesByNL: " + e.getMessage());
+            return Result.build(null, ResultCodeEnum.FAIL);
+        }
+    }
 
     @Override
     public Result<List<Node>> queryByTask(String query) {
@@ -109,7 +137,7 @@ public class TemplateRetrieveImpl implements TemplateRetrieve {
 
             // 将 Document 转换为 Node 并返回 Result
             nodeList = documents.stream()
-                    .map(this::convertToNeo4jNode)
+                    .map(FormatUtil::convertToNeo4jNode)
                     .collect(Collectors.toList());
 
             return Result.build(nodeList, ResultCodeEnum.SUCCESS);
@@ -138,7 +166,7 @@ public class TemplateRetrieveImpl implements TemplateRetrieve {
 
             // 将 Document 转换为 Node
             pageEntities = documents.stream()
-                    .map(this::convertToNeo4jNode)
+                    .map(FormatUtil::convertToNeo4jNode)
                     .collect(Collectors.toList());
                     
         } catch (Exception e) {
@@ -146,17 +174,5 @@ public class TemplateRetrieveImpl implements TemplateRetrieve {
             System.err.println("Error in queryPageEntitiesByTask: " + e.getMessage());
         }
         return pageEntities;
-    }
-
-    private Node convertToNeo4jNode(Document document) {
-        // 根据 Document 的属性创建 Neo4jNode
-        Node node = new Node();
-        node.setId(Long.valueOf(document.getId()));
-        node.setName(document.getName());
-        node.setFullName(document.getFullName());
-        node.setLabel(document.getLabel());
-        node.setDescription(document.getContent());
-        node.setIrList(JSONObject.parseArray(document.getIr(), IR.class));
-        return node;
     }
 }

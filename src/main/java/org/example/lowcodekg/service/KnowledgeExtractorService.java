@@ -43,6 +43,8 @@ public class KnowledgeExtractorService {
     private JavaMethodRepo javaMethodRepo;
     @Autowired
     private JavaFieldRepo javaFieldRepo;
+    @Autowired
+    private TemplateRepo templateRepo;
 
     @Autowired
     private Neo4jClient neo4jClient;
@@ -98,6 +100,7 @@ public class KnowledgeExtractorService {
         KnowledgeExtractor.setJavaClassRepo(javaClassRepo);
         KnowledgeExtractor.setJavaMethodRepo(javaMethodRepo);
         KnowledgeExtractor.setJavaFieldRepo(javaFieldRepo);
+        KnowledgeExtractor.setTemplateRepo(templateRepo);
 
         KnowledgeExtractor.setElasticSearchService(elasticSearchService);
         KnowledgeExtractor.setLlmGenerateService(llmGenerateService);

@@ -10,6 +10,7 @@ public final class Constants {
     /**
      * ES 索引名称
      */
+    public static final String DEFAULT_INDEX_NAME = "default";
     public static final String PAGE_INDEX_NAME = "page";
     public static final String WORKFLOW_INDEX_NAME = "workflow";
     public static final String DATA_OBJECT_INDEX_NAME = "data_object";
@@ -18,7 +19,7 @@ public final class Constants {
      * 任务检索参数设置
      */
     // 初步检索
-    public static final int MAX_RESULTS = 10;
+    public static final int MAX_RESULTS = 5;
     // 子任务检索
     public static final int MAX_DATA_OBJECT_NUM = 15;
     public static final int MAX_PAGE_NUM = 15;

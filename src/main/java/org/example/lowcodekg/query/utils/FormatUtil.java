@@ -9,6 +9,8 @@ import org.example.lowcodekg.model.dao.es.document.Document;
 import org.example.lowcodekg.model.dao.neo4j.entity.java.JavaClassEntity;
 import org.example.lowcodekg.model.dao.neo4j.entity.java.WorkflowEntity;
 import org.example.lowcodekg.model.dao.neo4j.entity.page.PageEntity;
+import org.example.lowcodekg.model.dao.neo4j.entity.template.TemplateEntity;
+import org.example.lowcodekg.query.model.IR;
 import org.example.lowcodekg.query.model.Node;
 import org.example.lowcodekg.query.model.Task;
 
@@ -141,6 +143,16 @@ public class FormatUtil {
         return document;
     }
 
+    public static Document templateToDocument(TemplateEntity entity) {
+        Document document = new Document();
+        document.setId(entity.getId().toString());
+        document.setName(entity.getName());
+        document.setContent(entity.getDescription());
+        document.setEmbedding(FormatUtil.ListToArray(entity.getEmbedding()));
+        document.setFileUrl(entity.getUrl());
+        return document;
+    }
+
     public static float[] ListToArray(List<Float> list) {
         float[] array = new float[list.size()];
         for (int i = 0; i < list.size(); i++) {
@@ -197,5 +209,24 @@ public class FormatUtil {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static Node convertToNeo4jNode(Document document) {
+        // 根据 Document 的属性创建 Neo4jNode
+        Node node = new Node();
+        node.setId(Long.valueOf(document.getId()));
+        node.setName(document.getName());
+        node.setFullName(document.getFullName());
+        node.setLabel(document.getLabel());
+        node.setDescription(document.getContent());
+        node.setIrList(JSONObject.parseArray(document.getIr(), IR.class));
+        return node;
+    }
+
+    public static TemplateEntity convertToTemplateNode(Document document) {
+        TemplateEntity template = new TemplateEntity();
+        template.setName(document.getName());
+        template.setTemplateUuid(document.getTemplateUuid());
+        return template;
     }
 }

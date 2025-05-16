@@ -35,6 +35,15 @@ public class Document {
     @Field(type = FieldType.Dense_Vector, dims = 512)
     private float[] embedding;
 
+    @Field(type = FieldType.Keyword)
+    private String templateUuid;
+
+    @Field(type = FieldType.Text)
+    private String description;
+
+    @Field(type = FieldType.Keyword)
+    private String fileUrl;
+
     @Override
     public String toString() {
         return "Document{" +

@@ -131,7 +131,6 @@ public class FormatUtil {
         document.setFullName(entity.getFullName());
         document.setContent(entity.getDescription());
         document.setEmbedding(FormatUtil.ListToArray(entity.getEmbedding()));
-        document.setIr(entity.getIr());
         // 设置label
         if(entity instanceof WorkflowEntity) {
             document.setLabel("Workflow");
@@ -147,9 +146,11 @@ public class FormatUtil {
         Document document = new Document();
         document.setId(entity.getId().toString());
         document.setName(entity.getName());
-        document.setContent(entity.getDescription());
+        document.setCnName(entity.getCnName());
+        document.setDescription(entity.getDescription());
         document.setEmbedding(FormatUtil.ListToArray(entity.getEmbedding()));
         document.setFileUrl(entity.getUrl());
+        document.setTemplateUuid(entity.getTemplateUuid());
         return document;
     }
 
@@ -219,14 +220,16 @@ public class FormatUtil {
         node.setFullName(document.getFullName());
         node.setLabel(document.getLabel());
         node.setDescription(document.getContent());
-        node.setIrList(JSONObject.parseArray(document.getIr(), IR.class));
         return node;
     }
 
     public static TemplateEntity convertToTemplateNode(Document document) {
         TemplateEntity template = new TemplateEntity();
         template.setName(document.getName());
+        template.setCnName(document.getCnName());
+        template.setDescription(document.getDescription());
         template.setTemplateUuid(document.getTemplateUuid());
+        template.setUrl(document.getFileUrl());
         return template;
     }
 }

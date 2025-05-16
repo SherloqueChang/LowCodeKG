@@ -55,7 +55,7 @@ public class WorkflowExtractor extends KnowledgeExtractor {
                         // 生成功能描述
                         String description = descriptionMap.get(workflowEntity.getFullName()).get("description");
                         String ir = descriptionMap.get(workflowEntity.getFullName()).get("ir");
-                         funcGenerateService.genWorkflowFuncFromJson(workflowEntity, description, ir);
+                        funcGenerateService.genWorkflowFuncFromJson(workflowEntity, description, ir);
                     }
                 });
             }

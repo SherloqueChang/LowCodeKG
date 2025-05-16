@@ -14,12 +14,17 @@ import java.io.IOException;
 import java.util.Collection;
 
 import static org.example.lowcodekg.query.utils.Constants.DEFAULT_INDEX_NAME;
-import static org.example.lowcodekg.query.utils.Constants.WORKFLOW_INDEX_NAME;
 
 public class TemplateExtractor extends KnowledgeExtractor {
 
     @Override
     public void extraction() {
+        try {
+            elasticSearchService.createIndex(Document.class, DEFAULT_INDEX_NAME);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
         for(String filePath: this.getDataDir()) {
             try {
                 // 获取目录下所有文件夹
@@ -36,8 +41,6 @@ public class TemplateExtractor extends KnowledgeExtractor {
                             true
                         );
                         parseTemplateEntity(jsonFiles);
-
-                        // element dir
 
                     }
                 }

@@ -21,36 +21,26 @@ public class Document {
     private String name;
 
     @Field(type = FieldType.Keyword)
+    private String cnName;
+
+    @Field(type = FieldType.Keyword)
     private String fullName;
 
     @Field(type = FieldType.Keyword)
     private String label;
 
+    @Field(type = FieldType.Keyword)
+    private String templateUuid;
+
     @Field(type = FieldType.Text)
     private String content;
 
-    @Field(type = FieldType.Text)
-    private String ir;
-
     @Field(type = FieldType.Dense_Vector, dims = 512)
     private float[] embedding;
-
-    @Field(type = FieldType.Keyword)
-    private String templateUuid;
 
     @Field(type = FieldType.Text)
     private String description;
 
     @Field(type = FieldType.Keyword)
     private String fileUrl;
-
-    @Override
-    public String toString() {
-        return "Document{" +
-                "name='" + name + '\'' +
-                ", label='" + label + '\'' +
-                ", content='" + content + '\'' +
-                ", ir='" + ir + '\'' +
-                '}';
-    }
 }

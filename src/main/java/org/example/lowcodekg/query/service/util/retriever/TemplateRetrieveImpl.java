@@ -57,9 +57,11 @@ public class TemplateRetrieveImpl implements TemplateRetrieve {
                     0.3,
                     DEFAULT_INDEX_NAME
             );
+
             templates = documents.stream()
                     .map(FormatUtil::convertToTemplateNode)
                     .collect(Collectors.toList());
+
             return Result.build(templates, ResultCodeEnum.SUCCESS);
 
         } catch (Exception e) {

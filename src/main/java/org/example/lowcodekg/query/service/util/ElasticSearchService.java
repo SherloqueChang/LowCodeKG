@@ -99,7 +99,7 @@ public class ElasticSearchService {
 
         // 如果索引已存在，返回提示信息
         if (indexExists) {
-            return "索引 '" + indexName + "' 已存在，无需重复创建";
+            deleteIndex(indexName);
         }
 
         // 动态生成索引映射

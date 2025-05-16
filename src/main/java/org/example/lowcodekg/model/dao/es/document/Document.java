@@ -43,4 +43,14 @@ public class Document {
 
     @Field(type = FieldType.Keyword)
     private String fileUrl;
+
+    @Field(type = FieldType.Keyword)
+    private String appKind;
+
+    @Field(type = FieldType.Keyword)
+    private String editorKind;
+
+    @Field(type = FieldType.Keyword)
+    private String tags;
+
 }

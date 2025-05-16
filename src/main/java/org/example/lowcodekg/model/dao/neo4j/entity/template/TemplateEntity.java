@@ -36,6 +36,9 @@ public class TemplateEntity {
     @Property("appKind")
     private String appKind;
 
+    @Property("editorKind")
+    private String editorKind;
+
     @Property("description")
     private String description;
 
@@ -47,4 +50,5 @@ public class TemplateEntity {
 
     @Property("embedding")
     private List<Float> embedding;
+
 }

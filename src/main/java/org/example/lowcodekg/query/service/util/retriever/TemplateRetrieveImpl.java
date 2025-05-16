@@ -58,6 +58,10 @@ public class TemplateRetrieveImpl implements TemplateRetrieve {
                     DEFAULT_INDEX_NAME
             );
 
+//            documents.stream().forEach(document -> {
+//                System.out.println(document);
+//            });
+
             templates = documents.stream()
                     .map(FormatUtil::convertToTemplateNode)
                     .collect(Collectors.toList());

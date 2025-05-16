@@ -72,6 +72,7 @@ public class TemplateExtractor extends KnowledgeExtractor {
                         entity.setIdentifier(jsonObject.getString("identifier") != null ? jsonObject.getString("identifier") : "");
                         entity.setAppKind(jsonObject.getString("appKind") != null ? jsonObject.getString("appKind") : "");
                         entity.setTags(jsonObject.getString("tags") != null ? jsonObject.getString("tags") : "");
+                        entity.setEditorKind(jsonObject.getString("editorKind") != null ? jsonObject.getString("editorKind") : "");
                         // for index
                         String description = entity.getName() + ":" + jsonObject.getString("description") != null ? jsonObject.getString("description") : "";
                         entity.setDescription(description);

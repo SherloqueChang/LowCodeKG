@@ -151,6 +151,9 @@ public class FormatUtil {
         document.setEmbedding(FormatUtil.ListToArray(entity.getEmbedding()));
         document.setFileUrl(entity.getUrl());
         document.setTemplateUuid(entity.getTemplateUuid());
+        document.setAppKind(entity.getAppKind());
+        document.setEditorKind(entity.getEditorKind());
+        document.setTags(entity.getTags());
         return document;
     }
 
@@ -230,6 +233,9 @@ public class FormatUtil {
         template.setDescription(document.getDescription());
         template.setTemplateUuid(document.getTemplateUuid());
         template.setUrl(document.getFileUrl());
+        template.setAppKind(document.getAppKind());
+        template.setEditorKind(document.getEditorKind());
+        template.setTags(document.getTags());
         return template;
     }
 }

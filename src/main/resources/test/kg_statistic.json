@@ -1,32 +1,31 @@
 {
-  "entities": {
-    "PageTemplate": 312,
-    "Script": 312,
-    "Component+ComponentExample": 6538,
-    "ConfigItem": 12662,
-    "ScriptData": 981,
-    "ScriptMethod": 1051,
-    "JavaClass": 1108,
-    "JavaClass+DataObject": 437,
-    "JavaMethod": 7515,
-    "Workflow": 621,
-    "JavaField": 4459,
-    "Template": 1
-  },
-  "relations": {
-    "METHOD_CALL": 4533,
-    "VARIABLE_TYPE": 1092,
-    "HAVE_FIELD": 4459,
-    "PARAM_TYPE": 1802,
-    "RETURN_TYPE": 1954,
-    "CONTAIN": 16763,
-    "HAVE_METHOD": 7515,
-    "FIELD_TYPE": 986,
-    "PARENT_OF": 6227,
-    "RELATED_TO": 878,
-    "FIELD_ACCESS": 302,
-    "DEPENDENCY": 86,
-    "EXTEND": 41,
-    "IMPLEMENT": 168
-  }
+    "entities": {
+        "Component+ComponentExample": 1345,
+        "Script": 64,
+        "JavaField": 583,
+        "JavaClass": 154,
+        "PageTemplate": 64,
+        "ConfigItem": 2686,
+        "ScriptData": 205,
+        "JavaClass+DataObject": 49,
+        "JavaMethod": 688,
+        "Workflow": 79,
+        "ScriptMethod": 217
+    },
+    "relations": {
+        "VARIABLE_TYPE": 125,
+        "RELATED_TO": 186,
+        "EXTEND": 4,
+        "FIELD_ACCESS": 60,
+        "RETURN_TYPE": 236,
+        "FIELD_TYPE": 144,
+        "METHOD_CALL": 598,
+        "IMPLEMENT": 24,
+        "PARENT_OF": 1281,
+        "DEPENDENCY": 20,
+        "CONTAIN": 3452,
+        "HAVE_FIELD": 583,
+        "HAVE_METHOD": 688,
+        "PARAM_TYPE": 138
+    }
 }

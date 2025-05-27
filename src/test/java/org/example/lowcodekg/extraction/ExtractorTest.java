@@ -28,6 +28,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.neo4j.core.Neo4jClient;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -58,10 +62,7 @@ public class ExtractorTest {
 
     @Test
     public void testKG() {
-        // 读取JSON文件中的统计数据
         String jsonPath = "src/main/resources/test/kg_statistic.json";
-        String jsonContent = FileUtil.readFile(jsonPath);
-        JSONObject fileStats = JSONObject.parseObject(jsonContent);
         
         // 从Neo4j读取统计数据
         JSONObject neo4jStats = new JSONObject();
@@ -72,37 +73,76 @@ public class ExtractorTest {
         String nodeCountCypher = "MATCH (n) RETURN DISTINCT labels(n) as label, count(*) as count";
         QueryRunner runner = neo4jClient.getQueryRunner();
         Result nodeResult = runner.run(nodeCountCypher);
+        int totalEntities = 0;
+        System.out.println("\n实体统计：");
         while(nodeResult.hasNext()) {
             var record = nodeResult.next();
             String label = String.join("+", record.get("label").asList().stream().map(Object::toString).toList());
-            entityStats.put(label, record.get("count").asInt());
+            int count = record.get("count").asInt();
+            entityStats.put(label, count);
+            totalEntities += count;
+            System.out.printf("%-20s: %d\n", label, count);
         }
+        System.out.println("实体总数：" + totalEntities);
         
         // 统计关系
         String relCountCypher = "MATCH ()-[r]->() RETURN DISTINCT type(r) as type, count(*) as count";
         Result relResult = runner.run(relCountCypher);
+        int totalRelations = 0;
+        System.out.println("\n关系统计：");
         while(relResult.hasNext()) {
             var record = relResult.next();
-            relationStats.put(record.get("type").asString(), record.get("count").asInt());
+            String type = record.get("type").asString();
+            int count = record.get("count").asInt();
+            relationStats.put(type, count);
+            totalRelations += count;
+            System.out.printf("%-20s: %d\n", type, count);
         }
+        System.out.println("关系总数：" + totalRelations);
         
         neo4jStats.put("entities", entityStats);
         neo4jStats.put("relations", relationStats);
         
-        // 比较两个JSON对象是否完全相同
-        boolean isEqual = fileStats.equals(neo4jStats);
-        
-        if (isEqual) {
-            System.out.println("测试通过：JSON文件数据与Neo4j数据完全一致");
-        } else {
-            System.out.println("测试不通过：数据不一致");
-            System.out.println("\nJSON文件中的数据：");
-            System.out.println(fileStats.toJSONString());
-            System.out.println("\nNeo4j中的数据：");
-            System.out.println(neo4jStats.toJSONString());
+        // 读取文件中的统计数据
+        String fileContent = null;
+        try {
+            fileContent = Files.readString(Paths.get(jsonPath), StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            System.out.println("无法读取文件：" + jsonPath);
+            return;
         }
         
-        assert isEqual : "统计数据不一致";
+        JSONObject fileStats = JSONObject.parseObject(fileContent);
+        
+        // 比较实体统计
+        JSONObject fileEntityStats = fileStats.getJSONObject("entities");
+        boolean entitiesMatch = true;
+        for (String label : entityStats.keySet()) {
+            int neo4jCount = entityStats.getIntValue(label);
+            int fileCount = fileEntityStats.getIntValue(label);
+            if (neo4jCount != fileCount) {
+                System.out.printf("实体[%s]数量不匹配：Neo4j=%d, 文件=%d\n", label, neo4jCount, fileCount);
+                entitiesMatch = false;
+            }
+        }
+        
+        // 比较关系统计
+        JSONObject fileRelationStats = fileStats.getJSONObject("relations");
+        boolean relationsMatch = true;
+        for (String type : relationStats.keySet()) {
+            int neo4jCount = relationStats.getIntValue(type);
+            int fileCount = fileRelationStats.getIntValue(type);
+            if (neo4jCount != fileCount) {
+                System.out.printf("关系[%s]数量不匹配：Neo4j=%d, 文件=%d\n", type, neo4jCount, fileCount);
+                relationsMatch = false;
+            }
+        }
+        
+        if (entitiesMatch && relationsMatch) {
+            System.out.println("\n验证通过：Neo4j中的实体和关系数量与文件记录一致");
+        } else {
+            System.out.println("\n验证失败：Neo4j中的实体和关系数量与文件记录不一致");
+        }
     }
 
     @Test

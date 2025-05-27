@@ -1,11 +1,13 @@
 package org.example.lowcodekg.service;
 
+import org.apache.log4j.chainsaw.Main;
 import org.example.lowcodekg.query.model.IR;
 import org.example.lowcodekg.query.model.Node;
 import org.example.lowcodekg.query.model.Task;
 import org.example.lowcodekg.query.model.TaskGraph;
 import org.example.lowcodekg.query.service.evaluation.DataProcess;
 import org.example.lowcodekg.query.service.evaluation.Evaluate;
+import org.example.lowcodekg.query.service.processor.MainService;
 import org.example.lowcodekg.query.service.processor.TaskMatching;
 import org.example.lowcodekg.query.service.processor.TaskMerge;
 import org.example.lowcodekg.query.service.processor.TaskSplit;
@@ -52,8 +54,10 @@ public class RecommendTest {
     private LLMService llmService;
     @Autowired
     private Evaluate evaluate;
+    @Autowired
+    private MainService mainService;
 
-//    @BeforeEach
+    //    @BeforeEach
     @Test
     void setUp() throws IOException {
 //        esService.deleteIndex("test");;
@@ -64,61 +68,18 @@ public class RecommendTest {
 
     @Test
     void test() {
-        FormatUtil.setPrintStream(logFilePath);
+//        FormatUtil.setPrintStream(logFilePath);
 
-        String query = "实现商品SKU库存的CRUD(增删改查)管理功能";
+        String query = "实现博客标签管理功能";
 
-        // 需求分解
-        TaskGraph taskGraph = taskSplit.taskSplit(query).getData();
-        // 基于IR的需求-资源匹配并重排序
-        for(Task task : taskGraph.getTasks().values()) {
-            taskMatching.rerankResource(task);
+        List<Node> result = mainService.recommend(query).getData();
+        for(Node node : result) {
+            System.out.println(node.getFullName());
         }
-        // 任务合并
-        Map<Task, Set<Node>> resourceList = taskMerge.mergeTask(taskGraph, query).getData();
 
 //        saveResult(query, resourceList, SAVE_EM_RESULT_PATH);
     }
 
-    @Test
-    void testSingleQuery() {
-        Task task = new Task();
-        task.setName("添加商品收藏功能");
-        task.setDescription("实现用户可以将商品添加到收藏列表的功能。");
-        List<IR> irList = irGenerate.generateIR(
-                task.getName() + ":" + task.getDescription(),
-                "Workflow")
-                .getData();
-        for(IR ir : irList) {
-            System.out.println("ir = " + ir.toString());
-        }
-        task.setIrList(irList);
-        task.setIsWorkflow(true);
-        task.setCategory(List.of("workflow"));
-
-        List<Node> resourceList = templateRetrieve.queryBySubTask(task).getData();
-        taskMatching.rerankResource(task);
-    }
-
-    @Test
-    void testEmQueryList() {
-        FormatUtil.setPrintStream(logFilePath);
-
-        Map<String, List<String>> groundTruth = DataProcess.getQueryResultMap(EM_GROUND_TRUTH_JSON_FILE_PATH);
-        for (Map.Entry<String, List<String>> entry : groundTruth.entrySet()) {
-            String query = entry.getKey();
-            try {
-                TaskGraph taskGraph = taskSplit.taskSplit(query).getData();
-                for(Task task : taskGraph.getTasks().values()) {
-                    taskMatching.rerankResource(task);
-                }
-                Map<Task, Set<Node>> resourceList = taskMerge.mergeTask(taskGraph, query).getData();
-                saveResult(query, resourceList, SAVE_EM_RESULT_PATH);
-            } catch (Exception e) {
-                System.out.println("query = " + query);
-            }
-        }
-    }
 
     @Test
     void testBlogQueryList() {
@@ -128,27 +89,29 @@ public class RecommendTest {
         Map<String, List<String>> groundTruth = DataProcess.getQueryResultMap(BLOG_GROUND_TRUTH_JSON_FILE_PATH);
         for (Map.Entry<String, List<String>> entry : groundTruth.entrySet()) {
             String query = entry.getKey();
-            System.out.println("testing query: " + query);
+            System.out.println("[Test] Processing query: " + query);
             try {
-                TaskGraph taskGraph = taskSplit.taskSplit(query).getData();
-                for(Task task : taskGraph.getTasks().values()) {
-                    taskMatching.rerankResource(task);
+                List<Node> result = mainService.recommend(query).getData();
+                System.out.println("[Info] Found " + result.size() + " results");
+                System.out.println("[Results]:");
+                for (Node node : result) {
+                    System.out.println("  - " + node.getFullName());
                 }
-                Map<Task, Set<Node>> resourceList = taskMerge.mergeTask(taskGraph, query).getData();
-                saveResult(query, resourceList, SAVE_BLOG_RESULT_PATH);
+                System.out.println("----------------------------------------");
+                saveResult(query, result, SAVE_BLOG_RESULT_PATH);
             } catch (Exception e) {
-                System.out.println("query = " + query);
+                System.out.println("[Error] Failed to process query: " + query);
+                System.out.println("[Error] Exception: " + e.getMessage());
             }
         }
 
         // evaluate results
-        FormatUtil.setPrintStream(BLOG_EVALUATE_RESULT_PATH);
         evaluate.evaluate(BLOG_GROUND_TRUTH_JSON_FILE_PATH, SAVE_BLOG_RESULT_PATH);
     }
 
     @Test
     void testEvaluate() {
-        FormatUtil.setPrintStream(BLOG_EVALUATE_RESULT_PATH);
+//        FormatUtil.setPrintStream(BLOG_EVALUATE_RESULT_PATH);
         evaluate.evaluate(BLOG_GROUND_TRUTH_JSON_FILE_PATH, SAVE_BLOG_RESULT_PATH);
     }
 }

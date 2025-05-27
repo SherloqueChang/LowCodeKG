@@ -9,8 +9,11 @@ import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
+
+import static org.example.lowcodekg.query.utils.Constants.BLOG_EVALUATE_RESULT_PATH;
 
 
 /**
@@ -29,6 +32,9 @@ public class Evaluate {
      */
     public double[] evaluate(String groundTruthPath, String resultPath) {
         try {
+            // 创建评估结果列表
+            List<JSONObject> evaluationResults = new ArrayList<>();
+            
             // 加载真实结果
             Map<String, List<String>> groundTruth = DataProcess.getQueryResultMap(groundTruthPath);
             
@@ -56,11 +62,10 @@ public class Evaluate {
                 try {
                     // 合并所有任务的resources并去重
                     Set<String> predictedResources = new HashSet<>();
-                    JSONArray tasks = queryResult.getJSONArray("task");
+                    JSONArray tasks = queryResult.getJSONArray("resources");
                     for (int j = 0; j < tasks.size(); j++) {
-                        JSONObject task = tasks.getJSONObject(j);
-                        List<String> resources = task.getJSONArray("resources").toJavaList(String.class);
-                        predictedResources.addAll(resources);
+                        String task = tasks.getString(j);
+                        predictedResources.add(task);
                     }
                     List<String> predicted = new ArrayList<>(predictedResources);
                     
@@ -76,28 +81,47 @@ public class Evaluate {
                     totalRecall += recall;
                     validQueryCount++;
 
-                    // 打印每个查询的评估结果
-                    System.out.printf("Query: %s\nPrecision: %.4f, Recall: %.4f\n", 
-                            query, precision, recall);
-                    System.out.println("Predicted: " + predicted);
-                    System.out.println("Ground Truth: " + groundTruthResult);
-                    System.out.println("----------------------------------------");
+                    // 创建单个查询的评估结果JSON对象
+                    JSONObject evaluationResult = new JSONObject();
+                    evaluationResult.put("query", query);
+                    evaluationResult.put("precision", precision);
+                    evaluationResult.put("recall", recall);
+                    evaluationResult.put("predicted", predicted);
+                    evaluationResult.put("groundTruth", groundTruthResult);
+                    
+                    // 将查询结果添加到结果列表
+                    evaluationResults.add(evaluationResult);
 
                 } catch (Exception e) {
-                    System.err.println("Error in evaluate query: " + query);
-                    e.printStackTrace();
+                    JSONObject errorResult = new JSONObject();
+                    errorResult.put("query", query);
+                    errorResult.put("error", e.getMessage());
+                    evaluationResults.add(errorResult);
                 }
             }
 
-            // 计算平均值
+            // 创建总体评估结果JSON对象
+            JSONObject overallResults = new JSONObject();
             if (validQueryCount > 0) {
                 double avgPrecision = totalPrecision / validQueryCount;
                 double avgRecall = totalRecall / validQueryCount;
                 
+                overallResults.put("avgPrecision", avgPrecision);
+//                overallResults.put("avgRecall", avgRecall);
+                overallResults.put("validQueryCount", validQueryCount);
+                overallResults.put("queryResults", evaluationResults);
+                
+                // 将结果保存到文件
+                try (FileWriter file = new FileWriter(BLOG_EVALUATE_RESULT_PATH)) {
+                    file.write(overallResults.toJSONString());
+                } catch (IOException e) {
+                    System.err.println("Error saving results to file: " + e.getMessage());
+                }
+                
                 // 打印总体评估结果
                 System.out.println("\n=== Overall Evaluation Results ===");
                 System.out.printf("Average Precision: %.4f\n", avgPrecision);
-                System.out.printf("Average Recall: %.4f\n", avgRecall);
+//                System.out.printf("Average Recall: %.4f\n", avgRecall);
                 System.out.printf("Total Valid Queries: %d\n", validQueryCount);
                 
                 return new double[]{avgPrecision, avgRecall};

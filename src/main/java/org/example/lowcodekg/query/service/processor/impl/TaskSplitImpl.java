@@ -47,13 +47,13 @@ public class TaskSplitImpl implements TaskSplit {
             // 根据需求检索相关资源
             List<Node> nodes = templateRetrieve.queryByTask(query).getData();
             if(debugConfig.isDebugMode()) {
-                System.out.println("初步检索资源:\n" + nodes);
+//                System.out.println("初步检索资源:\n" + nodes);
             }
 
             // 基于检索结果，构造提示让LLM进行任务分解，并识别依赖
             String answer = getSplitTasks(query, nodes);
             if(debugConfig.isDebugMode()) {
-                System.out.println("LLM任务分解:\n" + answer);
+//                System.out.println("LLM任务分解:\n" + answer);
             }
 
             // 将返回json格式字符串解析为Task对象
@@ -61,10 +61,10 @@ public class TaskSplitImpl implements TaskSplit {
 
             // 针对每个子任务，生成相应的IR（功能原语），记录在Task属性中
             for(Task task : taskList) {
-                task.setIrList(irGenerate.convertTaskToIR(task).getData());
+//                task.setIrList(irGenerate.convertTaskToIR(task).getData());
                 graph.addTask(task);
                 if(debugConfig.isDebugMode()) {
-                    System.out.println("Task: " + task.getName() + " IR: " + task.getIrList());
+//                    System.out.println("Task: " + task.getName() + " IR: " + task.getIrList());
                 }
             }
 
@@ -75,7 +75,7 @@ public class TaskSplitImpl implements TaskSplit {
 //            }
 
             // 构建子任务依赖图
-            buildDependencyGraph(graph, answer);
+//            buildDependencyGraph(graph, answer);
 
             return Result.build(graph, ResultCodeEnum.SUCCESS);
 

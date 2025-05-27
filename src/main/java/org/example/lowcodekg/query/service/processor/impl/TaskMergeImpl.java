@@ -50,18 +50,18 @@ public class TaskMergeImpl implements TaskMerge {
             // result format parse
             Map<Task, Set<Node>> result = filterResourcesByLLM(answer, sortedTasks);
 
-            if(debugConfig.isDebugMode()) {
-                System.out.println("任务合并prompt:\n" + prompt);
-                System.out.println("LLM返回结果:\n" + answer);
-                System.out.println("合并后的结果集:");
-                for(Task task : result.keySet()) {
-                    System.out.println("Task: " + task.getName() + ": " + task.getDescription());
-                    for(Node node : result.get(task)) {
-                        System.out.println("Node: " + node.getName() + ": " + node.getDescription());
-                    }
-                    System.out.println();
-                }
-            }
+//            if(debugConfig.isDebugMode()) {
+//                System.out.println("任务合并prompt:\n" + prompt);
+//                System.out.println("LLM返回结果:\n" + answer);
+//                System.out.println("合并后的结果集:");
+//                for(Task task : result.keySet()) {
+//                    System.out.println("Task: " + task.getName() + ": " + task.getDescription());
+//                    for(Node node : result.get(task)) {
+//                        System.out.println("Node: " + node.getName() + ": " + node.getDescription());
+//                    }
+//                    System.out.println();
+//                }
+//            }
 
             return Result.build(result, ResultCodeEnum.SUCCESS);
 
@@ -107,7 +107,7 @@ public class TaskMergeImpl implements TaskMerge {
         JSONArray resourcesArray = new JSONArray();
         for (Node node : task.getResourceList()) {
             JSONObject resource = new JSONObject();
-            resource.put("resourceName", node.getName());
+            resource.put("resourceName", node.getFullName());
             resource.put("resourceDescription", node.getDescription());
             resourcesArray.add(resource);
         }
@@ -130,7 +130,7 @@ public class TaskMergeImpl implements TaskMerge {
                     String resourceName = resource.getString("resourceName");
                     if (!Objects.isNull(task)) {
                         Node node = findNodeByName(task.getResourceList(), resourceName);
-                        if (!Objects.isNull(node)) {
+                        if (!Objects.isNull(node) && !node.getFullName().contains(".vo.")) {
                             result.add(node);
                         }
                     }
@@ -156,7 +156,7 @@ public class TaskMergeImpl implements TaskMerge {
 
     private Node findNodeByName(List<Node> nodeList, String name) {
         for (Node node : nodeList) {
-            if (node.getName().equals(name)) {
+            if (node.getFullName().equals(name)) {
                 return node;
             }
         }

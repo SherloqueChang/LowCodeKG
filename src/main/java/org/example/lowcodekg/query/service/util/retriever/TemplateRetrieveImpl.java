@@ -71,11 +71,9 @@ public class TemplateRetrieveImpl implements TemplateRetrieve {
             List<Node> nodeList;
             List<Document> documents = new ArrayList<>();
             StringBuilder taskInfo = new StringBuilder();
-            for(IR ir: task.getIrList()) {
-                taskInfo.append(ir.toSentence() + " ");
-            }
+            taskInfo.append(task.getName() + ":" + task.getDescription());
             if(debugConfig.isDebugMode()) {
-                System.out.println("子任务检索信息:\n" + taskInfo + "\n");
+//                System.out.println("子任务检索信息:\n" + taskInfo + "\n");
             }
 
             // 基于ES向量检索，获取候选列表

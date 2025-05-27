@@ -29,28 +29,27 @@ public class MainServiceImpl implements MainService {
     @Autowired
     private TaskMerge taskMerge;
 
-    @Override
-    public Result<Void> recommendList(List<String> queryList, String savePath) {
-        try {
-            for(String query: queryList) {
-                TaskGraph taskGraph = taskSplit.taskSplit(query).getData();
-                for(Task task : taskGraph.getTasks().values()) {
-                    taskMatching.rerankResource(task);
-                }
-                Map<Task, Set<Node>> resourceList = taskMerge.mergeTask(taskGraph, query).getData();
-                saveResult(query, resourceList, savePath);
-            }
-        } catch(Exception e) {
-            System.err.println("Error in recommendList: " + e.getMessage());
-            throw new RuntimeException("Error in recommendList: " + e.getMessage());
-        }
-        return Result.build(null, ResultCodeEnum.SUCCESS);
-    }
+//    @Override
+//    public Result<Void> recommendList(List<String> queryList, String savePath) {
+//        try {
+//            for(String query: queryList) {
+//                TaskGraph taskGraph = taskSplit.taskSplit(query).getData();
+//                for(Task task : taskGraph.getTasks().values()) {
+//                    taskMatching.rerankResource(task);
+//                }
+//                Map<Task, Set<Node>> resourceList = taskMerge.mergeTask(taskGraph, query).getData();
+//                saveResult(query, resourceList, savePath);
+//            }
+//        } catch(Exception e) {
+//            System.err.println("Error in recommendList: " + e.getMessage());
+//            throw new RuntimeException("Error in recommendList: " + e.getMessage());
+//        }
+//        return Result.build(null, ResultCodeEnum.SUCCESS);
+//    }
 
     @Override
     public Result<List<Node>> recommend(String query) {
         try {
-            Map<Task, Set<Node>> resourceList;
 
             // 检索增强的需求分解
             TaskGraph taskGraph = taskSplit.taskSplit(query).getData();
@@ -61,13 +60,13 @@ public class MainServiceImpl implements MainService {
             }
 
             // 任务合并
-            resourceList = taskMerge.mergeTask(taskGraph, query).getData();
-            List<Node> nodeList = new ArrayList<>();
+            Map<Task, Set<Node>> resourceList = taskMerge.mergeTask(taskGraph, query).getData();
+            Set<Node> result = new HashSet<>();
             for(Task task : resourceList.keySet()) {
-                nodeList.addAll(resourceList.get(task));
+                result.addAll(resourceList.get(task));
             }
 
-            return Result.build(nodeList, ResultCodeEnum.SUCCESS);
+            return Result.build(result.stream().toList(), ResultCodeEnum.SUCCESS);
 
         } catch (Exception e) {
             System.err.println("Error in recommend: " + e.getMessage());

@@ -59,13 +59,12 @@ public interface Prompt {
      */
     public final static String TASK_GRAPH_BUILD_PROMPT = """
             ## **Role & Objective** 
-            You are an expert in **Software Engineering** with extensive experience in analyzing **functional implementations** in software projects. Your primary role is twofold: 
-            1. **Break down a given requirement** into **functional implementation-oriented subtasks** based on the provided code context. Focus specifically on **core functional components**, avoiding technical details or non-functional aspects. 
-            2. **Identify potential dependencies** between these subtasks, explaining why the dependencies exist based on logical, data, or workflow relationships. 
+            You are an expert in **Software Engineering** with extensive experience in analyzing **functional implementations** in software projects. Your task is: 
+            **Break down a given requirement** into **functional implementation-oriented subtasks** based on the provided code context. Focus specifically on **core functional components**, avoiding technical details or non-functional aspects. 
             
             ---
             
-            ## **Step 1: Functional Breakdown** 
+            ## **Functional Breakdown** 
             Analyze the given requirement and extract **functional subtasks**
             ### **Task Categories Explanation:**
             1. data: Refers to entity fields/data structure/domain object changes (e.g., database schema changes, or DTOs).
@@ -83,14 +82,6 @@ public interface Prompt {
                 
             ### **Negative Examples (to avoid):** 
             ✗ Cache handling | ✗ Test case writing | ✗ Performance optimization | ✗ Deployment configuration | ✗ Monitoring logs 
-            
-            ---
-            
-            ## **Step 2: Identify Dependencies** 
-            Once the subtasks are extracted, analyze their relationships to determine **dependencies** based on the following criteria: 
-            1. **Semantic Relationships**: Identify references to **shared data, processes, or sequential operations** in natural language descriptions. 
-            2. **IR Sequence Logic**: If provided, analyze structured intermediate representations (`DslList`) to track how **objects and outputs are consumed across tasks**. 
-            3. **Development Workflow**: Consider logical execution order based on **data processing, API dependencies, UI flows**, etc. 
             
             ---
             
@@ -121,17 +112,6 @@ public interface Prompt {
                         "description": "子任务2的详细描述"
                     },
                     ...
-                ],
-                "dependencies": [
-                    {
-                        "taskId1": "taskId2",
-                        "dependency": "task2 需要使用 task1 产生的计算结果"
-                    },
-                    {
-                        "taskId3": "taskId4",
-                        "dependency": "task3 依赖 task4 生成的输入数据"
-                    },
-                    ...
                 ]
             }
             ```
@@ -142,11 +122,7 @@ public interface Prompt {
             - For task category, choose one or more of the three categories “data”, “workflow” and “page”.
             - **No specific code details** in the subtask descriptions.
             - Exclude non-functional requirements.
-            
-            - Dependencies should be determined strictly based on **the provided criteria**.
-            - Always return **task IDs** (not names).
-            - If **no dependencies exist**, return: `"Dependencies": []`
-            - Explanations must be **clear, precise, and in Chinese**.
+            - The number of subTasks should be as few as possible(brief break-down)
             """;
 
     /**
@@ -462,16 +438,8 @@ public interface Prompt {
      * 依靠LLM对子任务检索结果重排序
      */
     public static final String RERANK_WITHIN_TASK_PROMPT = """
-            **Role:** 
-            You are a seasoned software engineering expert with deep technical experience. 
-            
-            **Task:** 
             Given a user’s functional requirement and its decomposed subtasks—each with a list of recommended resources—you must: 
-            1. **Re-sort resources** for each subtask based on: 
-               - Relevance to the subtask description 
-               - Dependencies between subtasks (e.g., execution order, shared resources) 
-            2. **Filter out irrelevant resources** (low relevance or redundancy). 
-            
+            **Remove irrelevant resources** (low relevance or redundancy) for each subTask based on the functionality.
             
             ### **Input Format** 
             ```json
@@ -509,13 +477,10 @@ public interface Prompt {
                 ... 
               } 
               ``` 
-            - **Rules for sorting/filtering:** 
-              **Priority order:** 
-                 - Resources directly solving the subtask’s core problem > supporting tools.
-                 - Reserve resources of the DataObject type if the subtask involves data entities.
-              **Dependency analysis:** 
-                 - Remove duplicates (keep only the highest-priority instance). 
-              **Filtering criteria:** 
-                 - Exclude resources with no clear relevance to the subtask description. 
+              
+            Note:
+             - Make sure all the reserved resources are **highly relevant** to the subTask.
+             - Type of tool, general function resources like PageResult, Pagination, DateTime, home, log, operation, etc should be removed.
+             - Each subTask can reserve at most 3 resources.
             """;
 }

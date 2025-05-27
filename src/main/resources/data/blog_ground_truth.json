@@ -7,14 +7,16 @@
                 "top.naccl.controller.BlogController.blogs",
                 "top.naccl.controller.admin.BlogAdminController.updateTop",
                 "top.naccl.entity.Blog",
+                "blog-view.src.components.blog.BlogList",
                 "blog-cms.src.views.blog.blog.BlogList",
                 "blog-cms.src.views.blog.blog.WriteBlog"
             ]
         },
         {
-            "query": "实现博客评论审核的功能",
+            "query": "实现博客评论审核并通知的功能",
             "result": [
                 "blog-cms.src.views.blog.comment.CommentList",
+                "top.naccl.controller.CommentController.postComment",
                 "top.naccl.entity.Comment",
                 "top.naccl.controller.admin.CommentAdminController.updateNotice",
                 "top.naccl.controller.admin.CommentAdminController.updateComment",
@@ -26,7 +28,11 @@
             "result": [
                 "top.naccl.controller.BlogController.checkBlogPassword",
                 "top.naccl.controller.BlogController.getBlog",
+                "top.naccl.controller.admin.BlogAdminController.saveBlog",
+                "top.naccl.controller.admin.BlogAdminController.updateBlog",
                 "top.naccl.entity.Blog",
+                "top.naccl.model.dto.BlogPassword",
+                "blog-view.src.views.blog.Blog",
                 "blog-view.src.components.BlogPassword",
                 "blog-cms.src.views.blog.blog.BlogList",
                 "blog-cms.src.views.blog.blog.WriteBlog"
@@ -37,20 +43,27 @@
             "result": [
                 "top.naccl.controller.BlogController.getBlog",
                 "top.naccl.controller.admin.BlogAdminController.getBlog",
+                "top.naccl.controller.admin.VisitLogController.visitLogs",
+                "top.naccl.controller.admin.VisitorAdminController.visitors",
+                "top.naccl.controller.admin.DashboardAdminController.dashboard",
+                "top.naccl.model.dto.VisitLogUuidTime",
                 "top.naccl.entity.VisitRecord",
                 "top.naccl.entity.VisitLog",
+                "blog-cms.src.views.statistics.Visitor",
                 "blog-cms.src.views.log.VisitLog",
                 "blog-cms.src.views.dashboard.index"
             ]
         },
         {
-            "query": "实现博客分类管理功能",
+            "query": "实现博客分类Category管理功能",
             "result": [
                 "top.naccl.controller.admin.CategoryAdminController.delete",
                 "top.naccl.controller.admin.CategoryAdminController.saveCategory",
                 "top.naccl.controller.admin.CategoryAdminController.categories",
-                "top.naccl.service.impl.CategoryServiceImpl",
+                "top.naccl.controller.admin.CategoryAdminController.updateCategory",
                 "top.naccl.entity.Category",
+                "blog-cms.src.views.blog.blog.BlogList",
+                "blog-view.src.views.category.Category",
                 "blog-cms.src.views.blog.category.CategoryList"
             ]
         },
@@ -72,6 +85,7 @@
                 "top.naccl.controller.admin.ScheduleJobController.saveJob",
                 "top.naccl.controller.admin.ScheduleJobController.updateJob",
                 "top.naccl.controller.admin.ScheduleJobController.runJob",
+                "top.naccl.controller.admin.ScheduleJobController.logs",
                 "top.naccl.entity.ScheduleJob",
                 "top.naccl.entity.ScheduleJobLog",
                 "blog-cms.src.views.system.ScheduleJobList",
@@ -82,7 +96,6 @@
             "query": "实现博客搜索功能",
             "result": [
                 "top.naccl.controller.BlogController.searchBlog",
-                "top.naccl.controller.BlogController.getBlog",
                 "blog-view.src.components.blog.BlogItem",
                 "blog-cms.src.views.blog.blog.BlogList",
                 "top.naccl.entity.Blog"
@@ -93,9 +106,7 @@
             "result": [
                 "top.naccl.controller.admin.BlogAdminController.saveBlog",
                 "top.naccl.controller.admin.BlogAdminController.updateBlog",
-                "top.naccl.controller.admin.BlogAdminController.delete",
                 "top.naccl.entity.Blog",
-                "blog-view.src.components.blog.BlogItem",
                 "blog-view.src.views.blog.Blog",
                 "blog-cms.src.views.blog.blog.WriteBlog",
                 "blog-cms.src.views.blog.blog.BlogList"
@@ -106,8 +117,9 @@
             "result": [
                 "top.naccl.controller.admin.FriendAdminController.saveFriend",
                 "top.naccl.controller.admin.FriendAdminController.updateFriend",
+                "top.naccl.controller.admin.FriendAdminController.updatePublished",
                 "top.naccl.controller.admin.FriendAdminController.friendInfo",
-                "top.naccl.controller.FriendController.friends",
+                "top.naccl.controller.admin.FriendAdminController.friends",
                 "top.naccl.entity.Friend",
                 "blog-cms.src.views.page.FriendList",
                 "blog-view.src.views.friends.Friends"
@@ -116,12 +128,10 @@
         {
             "query": "实现友链评论功能",
             "result": [
-                "top.naccl.controller.CommentController.comments",
-                "top.naccl.controller.admin.CommentAdminController.comments",
                 "top.naccl.controller.CommentController.postComment",
+                "top.naccl.controller.admin.CommentAdminController.updateComment",
                 "top.naccl.controller.admin.FriendAdminController.updateFriendInfoCommentEnabled",
                 "top.naccl.entity.Friend",
-                "blog-cms.src.views.page.FriendList",
                 "blog-view.src.components.comment.Comment",
                 "blog-view.src.components.comment.CommentForm",
                 "blog-view.src.components.comment.CommentList"
@@ -131,18 +141,16 @@
             "query": "更改友链公开状态",
             "result": [
                 "top.naccl.controller.admin.FriendAdminController.updatePublished",
-                "top.naccl.controller.admin.FriendAdminController.updateFriend",
-                "top.naccl.controller.admin.FriendAdminController.updateFriendInfoCommentEnabled",
                 "top.naccl.controller.admin.FriendAdminController.friendInfo",
                 "top.naccl.entity.Friend",
                 "blog-cms.src.views.page.FriendList"
             ]
         },
         {
-            "query": "实现动态发布功能",
+            "query": "实现Moment动态发布功能",
             "result": [
                 "top.naccl.controller.admin.MomentAdminController.saveMoment",
-                "top.naccl.controller.admin.MomentAdminController.moments",
+                "top.naccl.controller.admin.MomentAdminController.deleteMoment",
                 "top.naccl.controller.admin.MomentAdminController.updatePublished",
                 "top.naccl.controller.admin.MomentAdminController.updateMoment",
                 "top.naccl.entity.Moment",
@@ -152,7 +160,7 @@
             ]
         },
         {
-            "query": "实现动态公开状态管理功能",
+            "query": "实现Moment动态公开状态管理功能",
             "result": [
                 "top.naccl.controller.admin.MomentAdminController.moment",
                 "top.naccl.controller.admin.MomentAdminController.updatePublished",
@@ -163,7 +171,7 @@
             ]
         },
         {
-            "query": "实现动态点赞功能",
+            "query": "实现Moment动态点赞功能",
             "result": [
                 "top.naccl.controller.MomentController.like",
                 "top.naccl.entity.Moment",
@@ -176,9 +184,11 @@
             "query": "实现用户登录功能",
             "result": [
                 "top.naccl.controller.LoginController.login",
+                "top.naccl.controller.admin.LoginLogController.loginLogs",
                 "top.naccl.entity.User",
                 "top.naccl.entity.LoginLog",
                 "top.naccl.entity.VisitLog",
+                "top.naccl.model.dto.LoginInfo",
                 "blog-cms.src.views.Login",
                 "blog-view.src.views.Login"
             ]
@@ -197,11 +207,12 @@
             "query": "实现用户密码修改功能",
             "result": [
                 "top.naccl.controller.admin.AccountAdminController.account",
-                "blog-cms.src.views.system.Account"
+                "blog-cms.src.views.system.Account",
+                "top.naccl.entity.User"
             ]
         },
         {
-            "query": "实现关于我页面配置",
+            "query": "实现关于我 About 页面配置",
             "result": [
                 "top.naccl.controller.admin.AboutAdminController.about",
                 "top.naccl.controller.AboutController.about",
@@ -216,6 +227,7 @@
             "result": [
                 "top.naccl.entity.SiteSetting",
                 "top.naccl.controller.admin.SiteSettingAdminController.siteSettings",
+                "top.naccl.controller.IndexController.site",
                 "top.naccl.controller.admin.SiteSettingAdminController.updateAll",
                 "blog-cms.src.views.page.SiteSetting"
             ]

@@ -20,5 +20,5 @@ public interface MainService {
     /**
      * 给定用户需求列表，推荐相关资源，结果存储到本地
      */
-    Result<Void> recommendList(List<String> query, String savePath);
+//    Result<Void> recommendList(List<String> query, String savePath);
 }

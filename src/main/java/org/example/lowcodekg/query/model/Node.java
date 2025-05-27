@@ -1,5 +1,7 @@
 package org.example.lowcodekg.query.model;
 
+import com.alibaba.fastjson.annotation.JSONField;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.example.lowcodekg.model.dao.neo4j.entity.java.JavaClassEntity;
@@ -31,10 +33,13 @@ public class Node {
 
     private String label;
 
+    @JsonIgnore
     private String content;
 
+    @JsonIgnore
     private String description;
 
+    @JsonIgnore
     private List<IR> irList;
 
     public Node(PageEntity entity) {

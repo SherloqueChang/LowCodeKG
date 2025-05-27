@@ -9,6 +9,7 @@ import org.example.lowcodekg.model.dao.es.document.Document;
 import org.example.lowcodekg.model.dao.neo4j.entity.java.JavaClassEntity;
 import org.example.lowcodekg.model.dao.neo4j.entity.java.WorkflowEntity;
 import org.example.lowcodekg.model.dao.neo4j.entity.page.PageEntity;
+import org.example.lowcodekg.query.model.IR;
 import org.example.lowcodekg.query.model.Node;
 import org.example.lowcodekg.query.model.Task;
 
@@ -24,6 +25,59 @@ import java.util.stream.Collectors;
  * @Date 2025/3/23 14:47
  */
 public class FormatUtil {
+
+
+    public static void saveResult(String query, List<Node> resources, String savePath) {
+        // 读取现有文件内容
+        JSONObject result = new JSONObject();
+        File file = new File(savePath);
+        // 获取现有的predicted数组
+        JSONArray predicted = new JSONArray();
+        if (file.exists()) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+                StringBuilder content = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    content.append(line);
+                }
+                result = JSONObject.parseObject(content.toString());
+                if(!Objects.isNull(result))
+                    predicted = result.getJSONArray("predicted");
+            } catch (IOException e) {
+                throw new RuntimeException("Error reading existing results: " + e.getMessage());
+            }
+        } else {
+            file.getParentFile().mkdirs();
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        // 创建新的查询结果
+        JSONObject queryResult = new JSONObject();
+        JSONArray tasks = new JSONArray();
+
+        // 设置查询
+        queryResult.put("query", query);
+
+        // 处理每个任务及其资源
+        for (Node node: resources) {
+            tasks.add(node.getFullName());
+        }
+
+        queryResult.put("resources", tasks);
+        predicted.add(queryResult);
+        if(result == null) result = new JSONObject();
+        result.put("predicted", predicted);
+
+        // 写入更新后的内容
+        try (FileWriter writer = new FileWriter(savePath)) {
+            writer.write(result.toJSONString());
+        } catch (IOException e) {
+            throw new RuntimeException("Error saving results to file: " + e.getMessage());
+        }
+    }
 
     /**
      * 保存资源推荐结果到本地
@@ -71,7 +125,7 @@ public class FormatUtil {
             JSONObject taskJson = new JSONObject();
             taskJson.put("name", task.getName());
             taskJson.put("description", task.getDescription());
-            
+
             List<String> resourceNames = nodes.stream()
                     .map(Node::getFullName)
                     .collect(Collectors.toList());
@@ -129,7 +183,6 @@ public class FormatUtil {
         document.setFullName(entity.getFullName());
         document.setContent(entity.getDescription());
         document.setEmbedding(FormatUtil.ListToArray(entity.getEmbedding()));
-        document.setIr(entity.getIr());
         // 设置label
         if(entity instanceof WorkflowEntity) {
             document.setLabel("Workflow");
@@ -153,8 +206,8 @@ public class FormatUtil {
         Set<String> stopWords = new HashSet<>();
         try (BufferedReader reader = new BufferedReader(
                 new InputStreamReader(
-                    FormatUtil.class.getClassLoader().getResourceAsStream("data/stopwords.txt"),
-                    StandardCharsets.UTF_8
+                        FormatUtil.class.getClassLoader().getResourceAsStream("data/stopwords.txt"),
+                        StandardCharsets.UTF_8
                 ))) {
             String line;
             while((line = reader.readLine()) != null) {
@@ -197,5 +250,16 @@ public class FormatUtil {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static Node convertToNeo4jNode(Document document) {
+        // 根据 Document 的属性创建 Neo4jNode
+        Node node = new Node();
+        node.setId(Long.valueOf(document.getId()));
+        node.setName(document.getName());
+        node.setFullName(document.getFullName());
+        node.setLabel(document.getLabel());
+        node.setDescription(document.getContent());
+        return node;
     }
 }

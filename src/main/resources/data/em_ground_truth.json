@@ -14,26 +14,13 @@
             ]
         },
         {
-            "query": "实现商品专题管理功能",
-            "result": [
-                "com.macro.mall.controller.CmsSubjectController.getList",
-                "com.macro.mall.portal.controller.HomeController.getSubjectList",
-                "com.macro.mall.controller.SmsHomeNewProductController.create",
-                "com.macro.mall.portal.controller.OmsCartItemController.delete",
-                "com.macro.mall.controller.PmsProductController.updateDeleteStatus",
-                "com.macro.mall.controller.PmsProductAttributeController.update",
-                "com.macro.mall.controller.PmsProductController.getUpdateInfo",
-                "com.macro.mall.model.PmsProduct",
-                "com.macro.mall.search.domain.EsProduct",
-                "mall-app-web.pages.product.newProductList"
-            ]
-        },
-        {
             "query": "实现购物车功能",
             "result": [
                 "com.macro.mall.portal.controller.OmsCartItemController.getCartProduct",
+                "com.macro.mall.portal.controller.OmsCartItemController.list",
                 "com.macro.mall.portal.controller.OmsCartItemController.updateQuantity",
                 "com.macro.mall.portal.controller.OmsCartItemController.listPromotion",
+                "com.macro.mall.portal.controller.OmsCartItemController.updateAttr",
                 "com.macro.mall.portal.controller.OmsCartItemController.add",
                 "com.macro.mall.portal.controller.OmsCartItemController.clear",
                 "com.macro.mall.portal.controller.OmsCartItemController.delete",
@@ -46,14 +33,12 @@
         {
             "query": "实现订单管理功能",
             "result": [
-                "com.macro.mall.controller.OmsOrderController.delivery",
                 "com.macro.mall.portal.controller.OmsPortalOrderController.paySuccess",
-                "com.macro.mall.portal.controller.OmsPortalOrderController.cancelOrder",
-                "com.macro.mall.portal.controller.OmsPortalOrderController.cancelUserOrder",
-                "com.macro.mall.portal.controller.OmsPortalOrderController.cancelTimeOutOrder",
                 "com.macro.mall.portal.controller.OmsPortalOrderController.confirmReceiveOrder",
-                "com.macro.mall.controller.OmsOrderReturnApplyController.list",
+                "com.macro.mall.portal.controller.OmsPortalOrderController.detail",
+                "com.macro.mall.portal.controller.OmsPortalOrderController.list",
                 "com.macro.mall.controller.OmsOrderController.detail",
+                "com.macro.mall.controller.OmsOrderController.list",
                 "com.macro.mall.model.OmsOrderExample",
                 "mall-app-web.pages.order.createOrder",
                 "mall-app-web.pages.order.order"
@@ -66,21 +51,8 @@
                 "com.macro.mall.portal.controller.OmsPortalOrderController.cancelTimeOutOrder",
                 "com.macro.mall.model.OmsOrderExample",
                 "mall-app-web.pages.order.orderDetail",
-                "mall-app-web.pages.order.order"
-            ]
-        },
-        {
-            "query": "实现订单修改功能",
-            "result": [                
-                "com.macro.mall.portal.controller.OmsPortalOrderController.detail",
-                "com.macro.mall.controller.OmsOrderSettingController.update",
-                "com.macro.mall.controller.OmsOrderController.updateReceiverInfo",
-                "com.macro.mall.controller.OmsOrderController.updateNote",
-                "com.macro.mall.model.OmsOrder",
-                "com.macro.mall.model.OmsOrderItem",
-                "com.macro.mall.model.OmsOrderOperateHistory",
-                "com.macro.mall.portal.domain.OmsOrderDetail",
-                "mall-app-web.pages.order.createOrder"
+                "mall-app-web.pages.order.order",
+                "com.macro.mall.model.OmsOrderSetting"
             ]
         },
         {
@@ -92,21 +64,8 @@
                 "com.macro.mall.search.domain.EsProduct",
                 "com.macro.mall.search.domain.EsProductRelatedInfo",
                 "com.macro.mall.portal.controller.PmsPortalProductController.search",
-                "mall-app-web.pages.product.hotProductList",
-                "mall-app-web.pages.user.productCollection",
+                "mall-app-web.pages.product.list",
                 "mall-app-web.pages.product.newProductList"
-            ]
-        },
-        {
-            "query": "实现会员等级管理功能",
-            "result": [
-                "mall-app-web.pages.user.user",
-                "com.macro.mall.controller.UmsAdminController.updateRole",
-                "com.macro.mall.portal.controller.UmsMemberController.info",
-                "com.macro.mall.controller.UmsMemberLevelController.list",
-                "com.macro.mall.model.UmsMemberLevel",
-                "com.macro.mall.model.UmsMemberRuleSetting",
-                "com.macro.mall.portal.domain.MemberDetails"
             ]
         },
         {
@@ -128,17 +87,8 @@
                 "com.macro.mall.controller.PmsSkuStockController.getList",
                 "com.macro.mall.controller.PmsSkuStockController.update",
                 "com.macro.mall.model.PmsSkuStockExample",
-                "com.macro.mall.model.PmsSkuStock"
-            ]
-        },
-        {
-            "query": "实现订单提交时的库存校验功能",
-            "result": [
-                "com.macro.mall.controller.PmsSkuStockController.getList",
-                "com.macro.mall.portal.domain.OmsOrderDetail",
-                "com.macro.mall.model.OmsOrderItem",
                 "com.macro.mall.model.PmsSkuStock",
-                "mall-app-web.pages.order.createOrder"
+                "mall-app-web.pages.product.newProductList"
             ]
         },
         {
@@ -146,9 +96,10 @@
             "result": [
                 "com.macro.mall.controller.PmsProductAttributeController.create",
                 "com.macro.mall.controller.PmsSkuStockController.update",
-                "com.macro.mall.controller.PmsProductCategoryController.getList",
+                "com.macro.mall.controller.PmsSkuStockController.getList",
                 "com.macro.mall.controller.PmsProductCategoryController.delete",
-                "com.macro.mall.model.PmsSkuStock"
+                "com.macro.mall.model.PmsSkuStock",
+                "com.macro.mall.model.PmsSkuStockExample"
             ]
         },
         {
@@ -176,6 +127,8 @@
                 "com.macro.mall.controller.OmsOrderReturnReasonController.update",
                 "com.macro.mall.controller.OmsOrderReturnReasonController.create",
                 "com.macro.mall.controller.OmsOrderReturnReasonController.delete",
+                "com.macro.mall.portal.domain.OmsOrderReturnApplyParam",
+                "com.macro.mall.model.OmsOrderReturnReasonExample",
                 "com.macro.mall.model.OmsOrderReturnApply",
                 "mall-app-web.pages.order.order",
                 "mall-app-web.pages.order.createOrder"
@@ -217,35 +170,6 @@
                 "com.macro.mall.controller.SmsHomeAdvertiseController.create",
                 "com.macro.mall.controller.SmsHomeAdvertiseController.updateStatus",
                 "com.macro.mall.controller.SmsHomeAdvertiseController.list"
-            ]
-        },
-        {
-            "query": "实现品牌推荐功能",
-            "result": [
-                "com.macro.mall.model.SmsHomeBrand",
-                "mall-app-web.pages.user.brandAttention",
-                "com.macro.mall.controller.SmsHomeBrandController.updateRecommendStatus",
-                "com.macro.mall.controller.SmsHomeBrandController.updateSort",
-                "com.macro.mall.portal.controller.PmsPortalBrandController.recommendList",
-                "com.macro.mall.portal.controller.MemberAttentionController.detail",
-                "com.macro.mall.portal.controller.MemberAttentionController.add",
-                "com.macro.mall.portal.controller.MemberAttentionController.delete",
-                "com.macro.mall.portal.controller.MemberAttentionController.list",
-                "com.macro.mall.portal.controller.MemberAttentionController.clear",
-                "com.macro.mall.dto.PmsBrandParam",
-                "com.macro.mall.portal.domain.MemberBrandAttention",
-                "mall-app-web.pages.user.brandAttention"
-            ]
-        },
-        {
-            "query": "实现首页推荐商品管理功能",
-            "result": [
-                "com.macro.mall.model.SmsHomeRecommendProduct",
-                "com.macro.mall.controller.SmsHomeRecommendProductController.create",
-                "com.macro.mall.portal.controller.HomeController.recommendProductList",
-                "com.macro.mall.portal.domain.HomeContentResult",
-                "com.macro.mall.model.SmsHomeNewProduct",
-                "mall-app-web.pages.product.list"
             ]
         },
         {
@@ -303,13 +227,13 @@
                 "com.macro.mall.model.UmsAdminRoleRelation",
                 "com.macro.mall.model.UmsAdminRoleRelationExample",
                 "com.macro.mall.model.UmsRoleResourceRelation",
+                "com.macro.mall.controller.UmsRoleController.listAll",
+                "com.macro.mall.controller.UmsRoleController.update",
+                "com.macro.mall.controller.UmsRoleController.create",
                 "com.macro.mall.model.UmsRoleResourceRelationExample",
                 "com.macro.mall.controller.UmsRoleController.allocMenu",
                 "com.macro.mall.controller.UmsRoleController.listMenu",
-                "com.macro.mall.controller.UmsRoleController.delete",
-                "com.macro.mall.controller.UmsRoleController.allocResource",
-                "com.macro.mall.controller.UmsRoleController.listResource",
-                "com.macro.mall.controller.UmsRoleController.updateStatus"
+                "com.macro.mall.controller.UmsRoleController.delete"
             ]
         },
         {
@@ -342,24 +266,11 @@
             ]
         },
         {
-            "query": "我希望当订单超时执行自动取消的操作",
-            "result": [
-                "com.macro.mall.portal.dao.PortalOrderDao.releaseSkuStockLock",
-                "com.macro.mall.controller.OmsOrderController.list",
-                "com.macro.mall.controller.OmsOrderSettingController.getItem",
-                "com.macro.mall.portal.controller.OmsPortalOrderController.cancelTimeOutOrder",
-                "com.macro.mall.portal.domain.OmsOrderDetail",
-                "com.macro.mall.model.OmsOrderOperateHistory",
-                "com.macro.mall.model.OmsOrderReturnReason",
-                "com.macro.mall.controller.OmsOrderSettingController.update",
-                "mall-app-web.pages.notice.notice"
-            ]
-        },
-        {
             "query": "修改购物车列表中指定商品的数量",
             "result": [
                 "com.macro.mall.portal.controller.OmsCartItemController.list",
                 "com.macro.mall.portal.controller.OmsCartItemController.updateQuantity",
+                "com.macro.mall.portal.domain.CartProduct",
                 "mall-app-web.pages.cart.cart"
             ]
         }

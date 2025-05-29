@@ -3,11 +3,11 @@
         {
             "query": "实现友链申请功能",
             "resources": [
+                "blog-view.src.views.friends.Friends",
                 "top.naccl.controller.admin.FriendAdminController.updatePublished",
                 "top.naccl.entity.Friend",
                 "blog-cms.src.views.page.FriendList",
                 "blog-view.src.components.comment.CommentForm",
-                "top.naccl.controller.admin.FriendAdminController.friends",
                 "top.naccl.model.dto.Friend",
                 "top.naccl.controller.admin.FriendAdminController.saveFriend"
             ]

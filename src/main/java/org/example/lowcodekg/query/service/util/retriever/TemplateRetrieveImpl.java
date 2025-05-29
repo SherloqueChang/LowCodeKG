@@ -45,17 +45,16 @@ public class TemplateRetrieveImpl implements TemplateRetrieve {
     public Result<List<Node>> queryByTask(String query) {
         List<Node> nodes = new ArrayList<>();
         try {
-            // 检索页面实体
-            List<Node> pageEntities = queryCategoryEntitiesByTask(query, PAGE_INDEX_NAME);
-            nodes.addAll(pageEntities);
+            List<Node> entities = queryCategoryEntitiesByTask(query, RESOURCE_INDEX_NAME);
+            nodes.addAll(entities);
 
             // 检索工作流实体
-            List<Node> workflowEntities = queryCategoryEntitiesByTask(query, WORKFLOW_INDEX_NAME);
-            nodes.addAll(workflowEntities);
+//            List<Node> workflowEntities = queryCategoryEntitiesByTask(query, WORKFLOW_INDEX_NAME);
+//            nodes.addAll(workflowEntities);
 
             // 检索数据对象实体
-            List<Node> dataObjectEntities = queryCategoryEntitiesByTask(query, DATA_OBJECT_INDEX_NAME);
-            nodes.addAll(dataObjectEntities);
+//            List<Node> dataObjectEntities = queryCategoryEntitiesByTask(query, DATA_OBJECT_INDEX_NAME);
+//            nodes.addAll(dataObjectEntities);
 
             return Result.build(nodes, ResultCodeEnum.SUCCESS);
 
@@ -79,30 +78,37 @@ public class TemplateRetrieveImpl implements TemplateRetrieve {
             // 基于ES向量检索，获取候选列表
             float[] vector = FormatUtil.ListToArray(EmbeddingUtil.embedText(taskInfo.toString()));
 
-            if(task.getIsPage())  {
-                documents.addAll(esService.hybridSearch(
-                        taskInfo.toString(), vector,
-                        MAX_PAGE_NUM, MIN_SCORE,
-                        0.0,
-                        PAGE_INDEX_NAME
-                ));
-            }
-            if(task.getIsWorkflow()) {
-                documents.addAll(esService.hybridSearch(
-                        taskInfo.toString(), vector,
-                        MAX_WORKFLOW_NUM, MIN_SCORE,
-                        0.0,
-                        WORKFLOW_INDEX_NAME
-                ));
-            }
-            if(task.getIsData()) {
-                documents.addAll(esService.hybridSearch(
-                        taskInfo.toString(), vector,
-                        MAX_DATA_OBJECT_NUM, MIN_SCORE,
-                        0.0,
-                        DATA_OBJECT_INDEX_NAME
-                ));
-            }
+            documents.addAll(esService.hybridSearch(
+                    taskInfo.toString(), vector,
+                    MAX_RESULTS, MIN_SCORE,
+                    0.0,
+                    RESOURCE_INDEX_NAME
+            ));
+
+//            if(task.getIsPage())  {
+//                documents.addAll(esService.hybridSearch(
+//                        taskInfo.toString(), vector,
+//                        MAX_PAGE_NUM, MIN_SCORE,
+//                        0.0,
+//                        PAGE_INDEX_NAME
+//                ));
+//            }
+//            if(task.getIsWorkflow()) {
+//                documents.addAll(esService.hybridSearch(
+//                        taskInfo.toString(), vector,
+//                        MAX_WORKFLOW_NUM, MIN_SCORE,
+//                        0.0,
+//                        WORKFLOW_INDEX_NAME
+//                ));
+//            }
+//            if(task.getIsData()) {
+//                documents.addAll(esService.hybridSearch(
+//                        taskInfo.toString(), vector,
+//                        MAX_DATA_OBJECT_NUM, MIN_SCORE,
+//                        0.0,
+//                        DATA_OBJECT_INDEX_NAME
+//                ));
+//            }
 
             // 将 Document 转换为 Node 并返回 Result
             nodeList = documents.stream()

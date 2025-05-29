@@ -75,6 +75,7 @@ public class FuncGenerateImpl implements FuncGenerate {
             entity.setEmbedding(EmbeddingUtil.embedText(description));
             Document document = FormatUtil.entityToDocument(entity);
             esService.indexDocument(document, DATA_OBJECT_INDEX_NAME);
+            esService.indexDocument(document, RESOURCE_INDEX_NAME);
         } catch (Exception e) {
             System.err.println("Error in genDataObjectFunc");
         }
@@ -97,6 +98,7 @@ public class FuncGenerateImpl implements FuncGenerate {
             entity.setEmbedding(EmbeddingUtil.embedText(description));
             Document document = FormatUtil.entityToDocument(entity);
             esService.indexDocument(document, WORKFLOW_INDEX_NAME);
+            esService.indexDocument(document, RESOURCE_INDEX_NAME);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -151,6 +153,7 @@ public class FuncGenerateImpl implements FuncGenerate {
             entity.setEmbedding(EmbeddingUtil.embedText(description));
             Document document = FormatUtil.entityToDocument(entity);
             esService.indexDocument(document, PAGE_INDEX_NAME);
+            esService.indexDocument(document, RESOURCE_INDEX_NAME);
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println("generate PageFunctionality error, " + pageEntity.getFullName());

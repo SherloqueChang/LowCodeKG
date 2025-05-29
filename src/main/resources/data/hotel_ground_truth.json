@@ -1,0 +1,182 @@
+{
+    "dataset": [
+        {
+            "query": "获取所有酒店的信息",
+            "result": [
+                "cn.mafangui.hotel.controller.common.HotelController.getAllHotel",
+                "hotel_app.src.components.IndexPage",
+                "cn.mafangui.hotel.entity.Hotel"
+            ]
+        },
+        {
+            "query": "酒店用户登录的功能",
+            "result": [
+                "hotel-manager.src.views.layout.Container",
+                "hotel-manager.src.views.login.index",
+                "cn.mafangui.hotel.controller.common.LoginController.workerLogin",
+                "hotel_app.src.components.Login",
+                "cn.mafangui.hotel.controller.common.LoginController.userLogin"
+            ]
+        },
+        {
+            "query": "提供退房的功能选项",
+            "result": [
+                "cn.mafangui.hotel.controller.worker.OpRoomController.updateRoom",
+                "cn.mafangui.hotel.controller.worker.OpOrderController.updateOrder",
+                "cn.mafangui.hotel.controller.worker.OpCheckInController.checkOut"
+            ]
+        },
+        {
+            "query": "实现酒店用户注册的功能",
+            "result": [
+                "cn.mafangui.hotel.entity.User",
+                "cn.mafangui.hotel.controller.worker.OpUserController.userAdd",
+                "cn.mafangui.hotel.controller.common.RegisterController.userRegister",
+                "hotel-manager.src.views.guest.add",
+                "hotel_app.src.components.Register"
+            ]
+        },
+        {
+            "query": "更新酒店用户的个人信息",
+            "result": [
+                "cn.mafangui.hotel.controller.worker.OpUserController.userUpdate",
+                "cn.mafangui.hotel.controller.user.UserController.userUpdate",
+                "hotel_app.src.components.MyProfile",
+                "hotel_app.src.components.IndexLayout",
+                "com.macro.mall.controller.UmsAdminController.update"
+            ]
+        },
+        {
+            "query": "获取酒店用户的个人资料",
+            "result": [
+                "cn.mafangui.hotel.controller.user.UserController.userUpdate",
+                "hotel_app.src.components.MyProfile",
+                "cn.mafangui.hotel.controller.user.UserController.getProfile"
+            ]
+        },
+        {
+            "query": "注销酒店用户的账号",
+            "result": [
+                "hotel_app.src.components.Login",
+                "cn.mafangui.hotel.controller.user.UserController.logout"
+            ]
+        },
+        {
+            "query": "酒店用户添加预订账单",
+            "result": [
+                "cn.mafangui.hotel.controller.user.UserOrderController.addOrder",
+                "cn.mafangui.hotel.entity.Order",
+                "hotel_app.src.components.MakeOrder",
+                "hotel-manager.src.views.order.add"
+            ]
+        },
+        {
+            "query": "酒店用户删除预订账单",
+            "result": [
+                "cn.mafangui.hotel.controller.user.UserOrderController.deleteOrderByUser",
+                "cn.mafangui.hotel.controller.worker.OpOrderController.deleteOrder",
+                "com.macro.mall.portal.controller.OmsPortalOrderController.deleteOrder",
+                "hotel-manager.src.views.order.order"
+            ]
+        },
+        {
+            "query": "酒店用户支付账单的功能",
+            "result": [
+                "cn.mafangui.hotel.controller.user.UserOrderController.payOrder",
+                "hotel_app.src.components.IndexLayout",
+                "cn.mafangui.hotel.controller.worker.OpOrderController.payOrder"
+            ]
+        },
+        {
+            "query": "酒店用户取消预订的账单",
+            "result": [
+                "cn.mafangui.hotel.controller.user.UserOrderController.cancelOrder",
+                "hotel_app.src.components.OrderDetail",
+                "cn.mafangui.hotel.controller.worker.OpOrderController.cancelOrder"
+            ]
+        },
+        {
+            "query": "酒店用户查看预订的账单",
+            "result": [
+                "hotel_app.src.components.OrderDetail",
+                "cn.mafangui.hotel.controller.user.UserOrderController.getAllByUser",
+                "com.macro.mall.portal.controller.OmsPortalOrderController.detail",
+                "hotel_app.src.components.Order"
+            ]
+        },
+        {
+            "query": "酒店用户查看账单的功能",
+            "result": [
+                "cn.mafangui.hotel.entity.Order",
+                "hotel_app.src.components.OrderDetail",
+                "hotel_app.src.components.Order",
+                "cn.mafangui.hotel.controller.worker.OpOrderController.getByUser",
+                "cn.mafangui.hotel.entity.OrderType"
+            ]
+        },
+        {
+            "query": "提供查找有空余房型的功能",
+            "result": [
+                "cn.mafangui.hotel.controller.worker.OpRoomTypeController.findAllRestRoomType",
+                "hotel_app.src.components.Room",
+                "cn.mafangui.hotel.entity.RoomType",
+                "cn.mafangui.hotel.controller.user.UserRoomController.findAllRestRoomType",
+                "cn.mafangui.hotel.controller.worker.OpRoomTypeController.getAllRoomType"
+            ]
+        },
+        {
+            "query": "提供查询房型的功能",
+            "result": [
+                "cn.mafangui.hotel.controller.worker.OpRoomController.getByType",
+                "cn.mafangui.hotel.controller.worker.OpRoomTypeController.findAllRestRoomType",
+                "hotel_app.src.components.Room",
+                "cn.mafangui.hotel.controller.user.UserRoomController.findAllRestRoomType",
+                "cn.mafangui.hotel.controller.worker.OpRoomTypeController.getAllRoomType"
+            ]
+        },
+        {
+            "query": "提供查看酒店信息的功能",
+            "result": [
+                "cn.mafangui.hotel.entity.Room",
+                "hotel_app.src.components.IndexPage",
+                "hotel_app.src.components.IndexLayout",
+                "cn.mafangui.hotel.entity.Hotel"
+            ]
+        },
+        {
+            "query": "添加酒店中房间信息的功能",
+            "result": [
+                "cn.mafangui.hotel.controller.worker.OpRoomController.addRoom",
+                "hotel-manager.src.views.roomType.add",
+                "hotel-manager.src.views.roomInfo.index",
+                "cn.mafangui.hotel.controller.worker.OpRoomTypeController.addRoomType",
+                "hotel-manager.src.views.roomType.index"
+            ]
+        },
+        {
+            "query": "提供查看酒店房间信息的功能",
+            "result": [
+                "cn.mafangui.hotel.entity.Room",
+                "hotel-manager.src.views.roomInfo.index",
+                "hotel_app.src.components.Room",
+                "cn.mafangui.hotel.controller.worker.OpRoomController.getById"
+            ]
+        },
+        {
+            "query": "更新酒店的信息",
+            "result": [
+                "cn.mafangui.hotel.entity.Hotel",
+                "hotel_app.src.components.IndexPage",
+                "cn.mafangui.hotel.controller.worker.HotelInfoController.updateHotel"
+            ]
+        },
+        {
+            "query": "添加处理超时订单的功能",
+            "result": [
+                "hotel_app.src.components.OrderDetail",
+                "hotel_app.src.components.Order",
+                "cn.mafangui.hotel.controller.worker.OpOrderController.orderOver"
+            ]
+        }
+    ]
+}

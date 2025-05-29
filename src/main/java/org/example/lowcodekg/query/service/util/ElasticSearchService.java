@@ -50,6 +50,8 @@ public class ElasticSearchService {
             createIndex(Document.class, PAGE_INDEX_NAME);
             createIndex(Document.class, WORKFLOW_INDEX_NAME);
             createIndex(Document.class, DATA_OBJECT_INDEX_NAME);
+            createIndex(Document.class, HOTEL_INDEX_NAME);
+            createIndex(Document.class, EMALL_INDEX_NAME);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

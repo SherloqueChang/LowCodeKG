@@ -66,6 +66,7 @@ public class MainServiceImpl implements MainService {
                 result.addAll(resourceList.get(task));
             }
 
+
             return Result.build(result.stream().toList(), ResultCodeEnum.SUCCESS);
 
         } catch (Exception e) {

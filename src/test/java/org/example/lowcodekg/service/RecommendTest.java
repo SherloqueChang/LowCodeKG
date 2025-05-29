@@ -70,7 +70,7 @@ public class RecommendTest {
     void test() {
 //        FormatUtil.setPrintStream(logFilePath);
 
-        String query = "实现博客标签管理功能";
+        String query = "实现一个购物车功能";
 
         List<Node> result = mainService.recommend(query).getData();
         for(Node node : result) {
@@ -83,9 +83,6 @@ public class RecommendTest {
 
     @Test
     void testBlogQueryList() {
-//        FormatUtil.setPrintStream(logFilePath);
-
-        // load data and run
         Map<String, List<String>> groundTruth = DataProcess.getQueryResultMap(BLOG_GROUND_TRUTH_JSON_FILE_PATH);
         for (Map.Entry<String, List<String>> entry : groundTruth.entrySet()) {
             String query = entry.getKey();
@@ -104,14 +101,60 @@ public class RecommendTest {
                 System.out.println("[Error] Exception: " + e.getMessage());
             }
         }
+        evaluate.evaluate(BLOG_GROUND_TRUTH_JSON_FILE_PATH, SAVE_BLOG_RESULT_PATH, BLOG_EVALUATE_RESULT_PATH);
+    }
 
-        // evaluate results
-        evaluate.evaluate(BLOG_GROUND_TRUTH_JSON_FILE_PATH, SAVE_BLOG_RESULT_PATH);
+    @Test
+    void testEMallQueryList() {
+        Map<String, List<String>> groundTruth = DataProcess.getQueryResultMap(EM_GROUND_TRUTH_JSON_FILE_PATH);
+        for (Map.Entry<String, List<String>> entry : groundTruth.entrySet()) {
+            String query = entry.getKey();
+            System.out.println("[Test] Processing query: " + query);
+            try {
+                List<Node> result = mainService.recommend(query).getData();
+                System.out.println("[Info] Found " + result.size() + " results");
+                System.out.println("[Results]:");
+                for (Node node : result) {
+                    System.out.println("  - " + node.getFullName());
+                }
+                System.out.println("----------------------------------------");
+                saveResult(query, result, SAVE_EM_RESULT_PATH);
+            } catch (Exception e) {
+                System.out.println("[Error] Failed to process query: " + query);
+                System.out.println("[Error] Exception: " + e.getMessage());
+            }
+        }
+        evaluate.evaluate(EM_GROUND_TRUTH_JSON_FILE_PATH, SAVE_EM_RESULT_PATH, EM_EVALUATE_RESULT_PATH);
+    }
+
+    @Test
+    void testHotelQueryList() {
+        Map<String, List<String>> groundTruth = DataProcess.getQueryResultMap(HOTEL_GROUND_TRUTH_JSON_FILE_PATH);
+        for (Map.Entry<String, List<String>> entry : groundTruth.entrySet()) {
+            String query = entry.getKey();
+            System.out.println("[Test] Processing query: " + query);
+            try {
+                List<Node> result = mainService.recommend(query).getData();
+                System.out.println("[Info] Found " + result.size() + " results");
+                System.out.println("[Results]:");
+                for (Node node : result) {
+                    System.out.println("  - " + node.getFullName());
+                }
+                System.out.println("----------------------------------------");
+                saveResult(query, result, SAVE_HOTEL_RESULT_PATH);
+            } catch (Exception e) {
+                System.out.println("[Error] Failed to process query: " + query);
+                System.out.println("[Error] Exception: " + e.getMessage());
+            }
+        }
+        evaluate.evaluate(HOTEL_GROUND_TRUTH_JSON_FILE_PATH, SAVE_HOTEL_RESULT_PATH, HOTEL_EVALUATE_RESULT_PATH);
     }
 
     @Test
     void testEvaluate() {
 //        FormatUtil.setPrintStream(BLOG_EVALUATE_RESULT_PATH);
-        evaluate.evaluate(BLOG_GROUND_TRUTH_JSON_FILE_PATH, SAVE_BLOG_RESULT_PATH);
+//        evaluate.evaluate(BLOG_GROUND_TRUTH_JSON_FILE_PATH, SAVE_BLOG_RESULT_PATH);
+//        evaluate.evaluate(EM_GROUND_TRUTH_JSON_FILE_PATH, SAVE_EM_RESULT_PATH, EM_EVALUATE_RESULT_PATH);
+        evaluate.evaluate(HOTEL_GROUND_TRUTH_JSON_FILE_PATH, SAVE_HOTEL_RESULT_PATH, HOTEL_EVALUATE_RESULT_PATH);
     }
 }

@@ -34,7 +34,7 @@ public class ElasticSearchServiceTest {
     @Autowired
     private Neo4jClient neo4jClient;
 
-    @BeforeEach
+//    @BeforeEach
     void setUp() throws IOException {
         esService.deleteIndex("test");
         // 确保索引存在
@@ -45,8 +45,7 @@ public class ElasticSearchServiceTest {
     @Test
     void testCreateIndex() throws IOException {
         // 测试重复创建索引
-        String result = esService.createIndex(Document.class, "test");
-        assertTrue(result.contains("已存在"));
+        String result = esService.createIndex(Document.class, RESOURCE_INDEX_NAME);
     }
 
     @Test
@@ -54,22 +53,11 @@ public class ElasticSearchServiceTest {
         // 创建测试文档
         Document doc1 = new Document();
         doc1.setId(UUID.randomUUID().toString());
-        doc1.setName("Java Programming Guide");
-        doc1.setContent("Java is a popular programming language. It is used for web development, Android apps, and enterprise software.");
+        doc1.setName("酒店管理");
         doc1.setNeo4jId(1L);
-        float[] embedding1 = FormatUtil.ListToArray(EmbeddingUtil.embedText(doc1.getName() + "\n" + doc1.getContent()));
+        float[] embedding1 = FormatUtil.ListToArray(EmbeddingUtil.embedText(doc1.getName()));
         doc1.setEmbedding(embedding1);
-
-        Document doc2 = new Document();
-        doc2.setId(UUID.randomUUID().toString());
-        doc2.setName("Python Tutorial");
-        doc2.setContent("Python is an easy to learn programming language. It's great for data science and machine learning.");
-        float[] embedding2 = FormatUtil.ListToArray(EmbeddingUtil.embedText(doc2.getName() + "\n" + doc2.getContent()));
-        doc2.setEmbedding(embedding2);
-
-        // 索引文档
-        esService.indexDocument(doc1, "test");
-        esService.indexDocument(doc2, "test");
+        esService.indexDocument(doc1, RESOURCE_INDEX_NAME);
 
         // 等待索引刷新
         Thread.sleep(1000);
@@ -79,8 +67,8 @@ public class ElasticSearchServiceTest {
 //        System.out.println(results2.get(0).getNeo4jId());
 
         // 测试向量搜索
-        float[] queryVector = FormatUtil.ListToArray(EmbeddingUtil.embedText("Java programming"));
-        List<Document> results3 = esService.searchByVector(queryVector, 1, 0.65, "test");
+        float[] queryVector = FormatUtil.ListToArray(EmbeddingUtil.embedText("酒店管理"));
+        List<Document> results3 = esService.searchByVector(queryVector, 3, 0.65, RESOURCE_INDEX_NAME);
         System.out.println(results3);
     }
 

@@ -13,7 +13,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 
-import static org.example.lowcodekg.query.utils.Constants.BLOG_EVALUATE_RESULT_PATH;
 
 
 /**
@@ -30,7 +29,7 @@ public class Evaluate {
      * @Param resultPath 预测结果保存路径
      * @return double[] 包含[平均准确率, 平均召回率]
      */
-    public double[] evaluate(String groundTruthPath, String resultPath) {
+    public double[] evaluate(String groundTruthPath, String resultPath, String savePath) {
         try {
             // 创建评估结果列表
             List<JSONObject> evaluationResults = new ArrayList<>();
@@ -85,7 +84,6 @@ public class Evaluate {
                     JSONObject evaluationResult = new JSONObject();
                     evaluationResult.put("query", query);
                     evaluationResult.put("precision", precision);
-                    evaluationResult.put("recall", recall);
                     evaluationResult.put("predicted", predicted);
                     evaluationResult.put("groundTruth", groundTruthResult);
                     
@@ -107,12 +105,11 @@ public class Evaluate {
                 double avgRecall = totalRecall / validQueryCount;
                 
                 overallResults.put("avgPrecision", avgPrecision);
-//                overallResults.put("avgRecall", avgRecall);
                 overallResults.put("validQueryCount", validQueryCount);
                 overallResults.put("queryResults", evaluationResults);
                 
                 // 将结果保存到文件
-                try (FileWriter file = new FileWriter(BLOG_EVALUATE_RESULT_PATH)) {
+                try (FileWriter file = new FileWriter(savePath)) {
                     file.write(overallResults.toJSONString());
                 } catch (IOException e) {
                     System.err.println("Error saving results to file: " + e.getMessage());

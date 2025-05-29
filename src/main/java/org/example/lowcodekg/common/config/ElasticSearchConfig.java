@@ -30,6 +30,9 @@ public class ElasticSearchConfig {
     @Value("${spring.elasticsearch.password}")
     private String password;
 
+    @Value("${spring.elasticsearch.index-name}")
+    private String indexName;
+
     @Bean
     public ElasticsearchClient elasticsearchClient() {
         // 创建 BasicCredentialsProvider 并设置用户名和密码

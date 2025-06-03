@@ -17,7 +17,7 @@ public final class Constants {
     public static final String EMALL_INDEX_NAME = "emall";
     public static final String HOTEL_INDEX_NAME = "hotel";
 
-    public static final String RESOURCE_INDEX_NAME = BLOG_INDEX_NAME;
+    public static final String RESOURCE_INDEX_NAME = HOTEL_INDEX_NAME;
 
     /**
      * 任务检索参数设置
